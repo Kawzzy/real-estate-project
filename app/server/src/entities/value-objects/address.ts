@@ -1,35 +1,27 @@
-import { ZipCodeInfo } from '../ZipCodeInfo';
+import { ZipCodeInfo } from '../zipCodeInfo';
+import { ValueObject } from './value-object';
 
-export interface IAddressAtts {
+export interface IAddressProps {
     zipCodeInfo: ZipCodeInfo;
     number: number;
     complement: string;
 }
 
-export class Address {
-	private _zipCodeInfo: ZipCodeInfo;
-	private _number: number;
-	private _complement: string;
+export class Address extends ValueObject<IAddressProps> {
 
-	constructor({ zipCodeInfo, number, complement }: IAddressAtts) {
-		this._zipCodeInfo = zipCodeInfo;
-		this._number = number;
-		this._complement = complement;
-	}
-
-	static create({ zipCodeInfo, number, complement }: IAddressAtts) {
-		return new Address({ zipCodeInfo, number, complement });
+	static create(props: IAddressProps) {
+		return new Address(props);
 	}
 
 	get zipCodeInfo(): ZipCodeInfo {
-		return this._zipCodeInfo;
+		return this.props.zipCodeInfo;
 	}
 
 	get number(): number {
-		return this._number;
+		return this.props.number;
 	}
 
 	get complement(): string {
-		return this._complement;
+		return this.props.complement;
 	}
 }

@@ -1,33 +1,26 @@
-export interface IContactAtts {
+import { ValueObject } from './value-object';
+
+export interface IContactProps {
     telephone?: string
     cellphone: string
     email: string
 }
 
-export class Contact {
-	private _telephone: string;
-	private _cellphone: string;
-	private _email: string;
-
-	constructor({ telephone, cellphone, email }: IContactAtts) {
-		this._telephone = telephone;
-		this._cellphone = cellphone;
-		this._email = email;
-	}
-
-	static create({ telephone, cellphone, email }: IContactAtts) {
-		return new Contact({ telephone, cellphone, email });
+export class Contact extends ValueObject<IContactProps> {
+	
+	static create(props: IContactProps) {
+		return new Contact(props);
 	}
     
 	get telephone() : string {
-		return this.telephone;
+		return this.props.telephone;
 	}
     
 	get cellphone() : string {
-		return this.telephone;
+		return this.props.cellphone;
 	}
     
 	get email() : string {
-		return this.telephone;
+		return this.props.email;
 	}
 }
