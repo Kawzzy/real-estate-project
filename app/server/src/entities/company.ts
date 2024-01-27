@@ -1,8 +1,8 @@
-import { randomUUID } from 'node:crypto';
+import { Entity } from './entity';
 import { Address } from './value-objects/address';
 import { Contact } from './value-objects/contact';
 
-export interface ICompanyAtts {
+export interface ICompanyProps {
     id?: string
     cod: number
     name: string
@@ -10,56 +10,44 @@ export interface ICompanyAtts {
     propertiesIds: string[]
     contact: Contact
     address: Address
+	createdAt: Date
 }
 
-export class Company {
-	private _id: string;
-	private _cod: number;
-	private _name: string;
-	private _agentsIds: string[];
-	private _propertiesIds: string[];
-	private _contact: Contact;
-	private _address: Address;
+export class Company extends Entity<ICompanyProps> {
 
-	constructor({ id, cod, name, agentsIds, propertiesIds, contact, address }: ICompanyAtts) {
-		this._id = id ?? randomUUID();
-		this._cod = cod;
-		this._name = name;
-		this._agentsIds = agentsIds;
-		this._propertiesIds = propertiesIds;
-		this._contact = contact;
-		this._address = address;
-	}
-
-	static create({ id, cod, name, agentsIds, propertiesIds, contact, address }: ICompanyAtts) {
-		return new Company({ id, cod, name, agentsIds, propertiesIds, contact, address });
+	static create(props: ICompanyProps, id?: string) {
+		return new Company(props, id);
 	}
 
 	get id(): string {
-		return this._id;
+		return this.props.id;
 	}
 
 	get cod(): number {
-		return this._cod;
+		return this.props.cod;
 	}
 
 	get name(): string {
-		return this._name;
+		return this.props.name;
 	}
 
 	get agentsIds(): string[] {
-		return this._agentsIds;
+		return this.props.agentsIds;
 	}
 
 	get propertiesIds(): string[] {
-		return this._propertiesIds;
+		return this.props.propertiesIds;
 	}
 
 	get contact(): Contact {
-		return this._contact;
+		return this.props.contact;
 	}
 
 	get address(): Address {
-		return this._address;
-	}   
+		return this.props.address;
+	}
+
+	get createdAt(): Date {
+		return this.props.createdAt;
+	}
 }

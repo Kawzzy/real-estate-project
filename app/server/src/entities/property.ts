@@ -1,117 +1,97 @@
-import { randomUUID } from 'node:crypto';
+import { Entity } from './entity';
 import { Address } from './value-objects/address';
 
-export interface IPropertyAtts {
-    id?: string;
-	cod: number;
-	description: string;
-	type: string;
-	status: string;
-	address: Address;
-	price: number;
-	areaSize: number;
-	floors: number;
-	amenities: string;
-	builtYear: number;
-	hasFurniture: boolean;
-	imagesIds: string[];
-	ownerId: string;
-	sponsorId: string;
+export interface IPropertyProps {
+    id?: string
+	cod: number
+	description: string
+	type: string
+	status: string
+	address: Address
+	price: number
+	areaSize: number
+	floors: number
+	amenities: string
+	builtYear: number
+	hasFurniture: boolean
+	imagesIds: string[]
+	ownerId: string
+	sponsorId: string
+	createdAt: Date
+	updatedAt: Date | null
 }
 
-export class Property {
-	private _id: string;
-	private _cod: number;
-	private _description: string;
-	private _type: string;
-	private _status: string;
-	private _address: Address;
-	private _price: number;
-	private _areaSize: number;
-	private _floors: number;
-	private _amenities: string;
-	private _builtYear: number;
-	private _hasFurniture: boolean;
-	private _imagesIds: string[];
-	private _ownerId: string;
-	private _sponsorId: string;
+export class Property extends Entity<IPropertyProps> {
 
-	constructor({ id, cod, description, type, status, address, price, areaSize, floors, amenities, builtYear, 
-		hasFurniture, imagesIds, ownerId, sponsorId }: IPropertyAtts) {
-		this._id = id ?? randomUUID();
-		this._cod = cod;
-		this._description = description;
-		this._type = type;
-		this._status = status;
-		this._address = address;
-		this._price = price;
-		this._areaSize = areaSize;
-		this._floors = floors;
-		this._amenities = amenities;
-		this._builtYear = builtYear;
-		this._hasFurniture = hasFurniture;
-		this._imagesIds = imagesIds;
-		this._ownerId = ownerId;
-		this._sponsorId = sponsorId;
+	static create(props: IPropertyProps, id?: string) {
+		return new Property(props, id);
 	}
 
 	get id(): string {
-		return this._id;
+		return this.props.id;
 	}
 
 	get cod(): number {
-		return this._cod;
+		return this.props.cod;
 	}
 
 	get description(): string {
-		return this._description;
+		return this.props.description;
 	}
 
 	get type(): string {
-		return this._type;
+		return this.props.type;
 	}
 
 	get status(): string {
-		return this._status;
+		return this.props.status;
 	}
 
 	get address(): Address {
-		return this._address;
+		return this.props.address;
 	}
 
 	get price(): number {
-		return this._price;
+		return this.props.price;
 	}
 
 	get areaSize(): number {
-		return this._areaSize;
+		return this.props.areaSize;
 	}
 
 	get floors(): number {
-		return this._floors;
+		return this.props.floors;
 	}
 
 	get amenities(): string {
-		return this._amenities;
+		return this.props.amenities;
 	}
 
 	get builtYear(): number {
-		return this._builtYear;
+		return this.props.builtYear;
 	}
 
 	get hasFurniture(): boolean {
-		return this._hasFurniture;
+		return this.props.hasFurniture;
 	}
 
 	get imagesIds(): string[] {
-		return this._imagesIds;
+		return this.props.imagesIds;
 	}
 
 	get ownerId(): string {
-		return this._ownerId;
+		return this.props.ownerId;
 	}
 
 	get sponsorId(): string {
-		return this._sponsorId;
-	}   
+		return this.props.sponsorId;
+	}
+
+	get createdAT(): Date {
+		return this.props.createdAt;
+	}
+
+	get updatedAt(): Date {
+		return this.props.updatedAt;
+	}
 }

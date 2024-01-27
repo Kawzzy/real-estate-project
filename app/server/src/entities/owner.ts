@@ -1,50 +1,42 @@
-import { randomUUID } from 'node:crypto';
+import { Entity } from './entity';
 import { Contact } from './value-objects/contact';
 
-export interface IOwnerAtts {
+export interface IOwnerProps {
     id?: string
     cod: number
     name: string
     contact: Contact
     propertiesIds: string[]
+	createdAt: Date
 }
 
-export class Owner {
-	private _id: string;
-	private _cod: number;
-	private _name: string;
-	private _contact: Contact;
-	private _propertiesIds: string[];
+export class Owner extends Entity<IOwnerProps> {
 
-	constructor({ id, cod, name, contact, propertiesIds }: IOwnerAtts) {
-		this._id = id ?? randomUUID();
-		this._cod = cod;
-		this._name = name;
-		this._contact = contact;
-		this._propertiesIds = propertiesIds;
-	}
-
-	static create({ id, cod, name, contact, propertiesIds }: IOwnerAtts) {
-		return new Owner({ id, cod, name, contact, propertiesIds});
+	static create(props: IOwnerProps, id?: string) {
+		return new Owner(props, id);
 	}
 
 	get id(): string {
-		return this._id;
+		return this.props.id;
 	}
     
 	get cod(): number {
-		return this._cod;
+		return this.props.cod;
 	}
     
 	get name(): string {
-		return this._name;
+		return this.props.name;
 	}
     
 	get contact(): Contact {
-		return this._contact;
+		return this.props.contact;
 	}
     
 	get propertiesIds(): string[] {
-		return this._propertiesIds;
+		return this.props.propertiesIds;
+	}
+    
+	get createdAt(): Date {
+		return this.props.createdAt;
 	}
 }

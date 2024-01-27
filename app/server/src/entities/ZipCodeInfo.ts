@@ -1,54 +1,46 @@
-export interface IZipCodeInfoAtts {
-	zipCode: string;
-	street: string;
-	neighborhood: string;
-	city: string;
-	state: string;
-	country: string;
+import { Entity } from './entity';
+
+export interface IZipCodeInfoProps {
+	zipCode: string
+	street: string
+	neighborhood: string
+	city: string
+	state: string
+	country: string
+	createdAt: Date
 }
 
-export class ZipCodeInfo {
-	private _zipCode: string;
-	private _street: string;
-	private _neighborhood: string;
-	private _city: string;
-	private _state: string;
-	private _country: string;
-    
-	constructor({ zipCode, street, neighborhood, city, state, country }: IZipCodeInfoAtts) {
-		this._zipCode = zipCode;
-		this._street = street;
-		this._neighborhood = neighborhood;
-		this._city = city;
-		this._state = state;
-		this._country = country;
+export class ZipCodeInfo extends Entity<IZipCodeInfoProps> {
+	
+	static create(props: IZipCodeInfoProps, id?: string) {
+		return new ZipCodeInfo(props, id);
 	}
 
-	static create({ zipCode, street, neighborhood, city, state, country }: IZipCodeInfoAtts) {
-		return new ZipCodeInfo({ zipCode, street, neighborhood, city, state, country });
+	get zipCode(): string {
+		return this.props.zipCode;
 	}
 
-	public get zipCode() : string {
-		return this.zipCode;
+	get street(): string {
+		return this.props.street;
 	}
 
-	public get street() : string {
-		return this.street;
+	get neighborhood(): string {
+		return this.props.neighborhood;
 	}
 
-	public get neighborhood() : string {
-		return this.neighborhood;
+	get city(): string {
+		return this.props.city;
 	}
 
-	public get city() : string {
-		return this.city;
+	get state(): string {
+		return this.props.state;
 	}
 
-	public get state() : string {
-		return this.state;
+	get country(): string {
+		return this.props.country;
 	}
 
-	public get country() : string {
-		return this.country;
+	get createdAt(): Date {
+		return this.props.createdAt;
 	}
 }
