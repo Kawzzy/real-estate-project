@@ -1,13 +1,14 @@
 import { Entity } from './entity';
 import { Address } from './value-objects/address';
 import { PropertyType } from './enums/property-type';
+import { PropertyStatus } from './enums/property-status';
 
 export interface IPropertyProps {
     id?: string
 	cod: number
 	description: string
 	type: PropertyType
-	status: string
+	status: PropertyStatus
 	address: Address
 	price: number
 	areaSize: number
@@ -44,7 +45,7 @@ export class Property extends Entity<IPropertyProps> {
 		return this.props.type;
 	}
 
-	get status(): string {
+	get status(): PropertyStatus {
 		return this.props.status;
 	}
 
