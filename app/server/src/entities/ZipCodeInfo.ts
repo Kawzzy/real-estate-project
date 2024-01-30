@@ -1,4 +1,5 @@
 import { Entity } from './entity';
+import { Optional } from '@/utils/optional';
 
 export interface IZipCodeInfoProps {
 	zipCode: string
@@ -6,14 +7,16 @@ export interface IZipCodeInfoProps {
 	neighborhood: string
 	city: string
 	state: string
-	country: string
 	createdAt: Date
 }
 
 export class ZipCodeInfo extends Entity<IZipCodeInfoProps> {
 	
-	static create(props: IZipCodeInfoProps, id?: string) {
-		return new ZipCodeInfo(props, id);
+	static create(props: Optional<IZipCodeInfoProps, 'createdAt'>, id?: string) {
+		return new ZipCodeInfo({
+			...props,
+			createdAt: props.createdAt ?? new Date()
+		}, id);
 	}
 
 	get zipCode(): string {
@@ -34,10 +37,6 @@ export class ZipCodeInfo extends Entity<IZipCodeInfoProps> {
 
 	get state(): string {
 		return this.props.state;
-	}
-
-	get country(): string {
-		return this.props.country;
 	}
 
 	get createdAt(): Date {
