@@ -1,9 +1,9 @@
 import { Entity } from './entity';
+import { Optional } from '@/utils/optional';
 import { Contact } from './value-objects/contact';
 
 export interface IAgentProps {
-    id?: string;
-    cod: number;
+    cod?: number;
     name: string;
     contact: Contact;
     companyId: string;
@@ -13,14 +13,13 @@ export interface IAgentProps {
 
 export class Agent extends Entity<IAgentProps> {
 
-	static create(props: IAgentProps, id?: string) {
-		return new Agent(props, id);
+	static create(props: Optional<IAgentProps, 'createdAt'>, id?: string) {
+		return new Agent({
+			...props,
+			createdAt: props.createdAt ?? new Date()
+		}, id);
 	}
 
-	get id(): string {
-		return this.props.id;
-	}
-    
 	get cod(): number {
 		return this.props.cod;
 	}
