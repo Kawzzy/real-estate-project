@@ -1,10 +1,10 @@
 import { Entity } from './entity';
+import { Optional } from '@/utils/optional';
 import { Address } from './value-objects/address';
 import { Contact } from './value-objects/contact';
 
 export interface ICompanyProps {
-    id?: string
-    cod: number
+    cod?: number
     name: string
     agentsIds: string[]
     propertiesIds: string[]
@@ -15,12 +15,11 @@ export interface ICompanyProps {
 
 export class Company extends Entity<ICompanyProps> {
 
-	static create(props: ICompanyProps, id?: string) {
-		return new Company(props, id);
-	}
-
-	get id(): string {
-		return this.props.id;
+	static create(props: Optional<ICompanyProps, 'createdAt'>, id?: string) {
+		return new Company({
+			...props,
+			createdAt: props.createdAt ?? new Date()
+		}, id);
 	}
 
 	get cod(): number {
