@@ -1,22 +1,16 @@
 import { Entity } from './entity';
 import { Address } from './value-objects/address';
-import { PropertyType } from './enums/property-type';
-import { Amenities } from './value-objects/amenities';
 import { PropertyStatus } from './enums/property-status';
 
 export interface IPropertyProps {
-    id?: string
-	cod: number
+    cod?: number
 	description: string
-	type: PropertyType
 	status: PropertyStatus
 	address: Address
 	price: number
 	areaSize: number
 	floors: number
-	amenities: Amenities
 	builtYear: number
-	hasFurniture: boolean
 	imagesIds: string[]
 	ownerId: string
 	sponsorId: string
@@ -24,14 +18,10 @@ export interface IPropertyProps {
 	updatedAt: Date | null
 }
 
-export class Property extends Entity<IPropertyProps> {
+export abstract class Property<Props extends IPropertyProps> extends Entity<IPropertyProps> {
 
-	static create(props: IPropertyProps, id?: string) {
-		return new Property(props, id);
-	}
-
-	get id(): string {
-		return this.props.id;
+	constructor(props: Props, id?: string) {
+		super(props, id);
 	}
 
 	get cod(): number {
@@ -41,11 +31,6 @@ export class Property extends Entity<IPropertyProps> {
 	get description(): string {
 		return this.props.description;
 	}
-
-	get type(): PropertyType {
-		return this.props.type;
-	}
-
 	get status(): PropertyStatus {
 		return this.props.status;
 	}
@@ -66,16 +51,8 @@ export class Property extends Entity<IPropertyProps> {
 		return this.props.floors;
 	}
 
-	get amenities(): Amenities {
-		return this.props.amenities;
-	}
-
 	get builtYear(): number {
 		return this.props.builtYear;
-	}
-
-	get hasFurniture(): boolean {
-		return this.props.hasFurniture;
 	}
 
 	get imagesIds(): string[] {
