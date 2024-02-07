@@ -5,108 +5,110 @@ export interface IResidentialProps extends IPropertyProps {
     condominium: string
     condominiumTax: number
     amenities: number
-    pool: number
-    heat: number
-    airConditioner: number
-    balcony: number
-    laundry: number
-    garage: number
-    elevator: number
-    bedrooms: number
-    bathrooms: number
-    kitchen: number
-    livingRoom: number
-    dinnerRoom: number
-    playground: boolean
-    gym: boolean
-    socialSpace: boolean
-	furniture: boolean
+    pool?: number
+    heat?: number
+    airConditioner?: number
+    balcony?: number
+    laundry?: number
+    garage?: number
+    elevator?: number
+    bedrooms?: number
+    bathrooms?: number
+    kitchen?: number
+    livingRoom?: number
+    dinnerRoom?: number
+    playground?: boolean
+    gym?: boolean
+    socialSpace?: boolean
+	furniture?: boolean
     type: ResidentialType
 }
 
 export abstract class Residential<Props extends IResidentialProps> extends Property<IResidentialProps> {
+
+	declare protected props: IResidentialProps;
     
 	constructor(props: Props, id?: string) {
 		super(props, id);
 	}
 
 	get condominium(): string {
-		return this.condominium;
+		return this.props.condominium;
 	}
 
 	get condominiumTax(): number {
-		return this.condominiumTax;
+		return this.props.condominiumTax;
 	}
 
 	get amenities(): number {
-		return this.amenities;
+		return this.props.amenities;
 	}
 
 	get pool(): number {
-		return this.pool;
+		return this.props.pool;
 	}
 
 	get heat(): number {
-		return this.heat;
+		return this.props.heat;
 	}
 
 	get airConditioner(): number {
-		return this.airConditioner;
+		return this.props.airConditioner;
 	}
 
 	get balcony(): number {
-		return this.balcony;
+		return this.props.balcony;
 	}
 
 	get laundry(): number {
-		return this.laundry;
+		return this.props.laundry;
 	}
 
 	get garage(): number {
-		return this.garage;
+		return this.props.garage;
 	}
 
 	get elevator(): number {
-		return this.elevator;
+		return this.props.elevator;
 	}
 
 	get bedrooms(): number {
-		return this.bedrooms;
+		return this.props.bedrooms;
 	}
 
 	get bathrooms(): number {
-		return this.bathrooms;
+		return this.props.bathrooms;
 	}
 
 	get kitchen(): number {
-		return this.kitchen;
+		return this.props.kitchen;
 	}
 
 	get livingRoom(): number {
-		return this.livingRoom;
+		return this.props.livingRoom;
 	}
 
 	get dinnerRoom(): number {
-		return this.dinnerRoom;
+		return this.props.dinnerRoom;
 	}
 
 	get playground(): boolean {
-		return this.playground;
+		return this.props.playground;
 	}
 
 	get gym(): boolean {
-		return this.gym;
+		return this.props.gym;
 	}
 
 	get socialSpace(): boolean {
-		return this.socialSpace;
+		return this.props.socialSpace;
 	}
 
 	get furniture(): boolean {
-		return this.furniture;
+		return this.props.furniture;
 	}
 
 	get type(): ResidentialType {
-		return this.type;
+		return this.props.type;
 	}
 }

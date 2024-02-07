@@ -9,16 +9,18 @@ export interface IPropertyProps {
 	address: Address
 	price: number
 	areaSize: number
-	floors: number
+	floors?: number
 	builtYear: number
 	imagesIds: string[]
 	ownerId: string
 	sponsorId: string
 	createdAt: Date
-	updatedAt: Date | null
+	updatedAt?: Date | null
 }
 
 export abstract class Property<Props extends IPropertyProps> extends Entity<IPropertyProps> {
+
+	declare protected props: IPropertyProps;
 
 	constructor(props: Props, id?: string) {
 		super(props, id);
