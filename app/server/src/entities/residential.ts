@@ -2,8 +2,8 @@ import { IPropertyProps, Property } from './property';
 import { ResidentialType } from './enums/residential-type';
 
 export interface IResidentialProps extends IPropertyProps {
-    condominium: string
-    condominiumTax: number
+    condominium?: string
+    condominiumTax?: number
     amenities: number
     pool?: number
     heat?: number

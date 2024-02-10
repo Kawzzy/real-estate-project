@@ -1,11 +1,11 @@
-import { Loft } from '@/entities/loft';
+import { House } from '@/entities/house';
 import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { PropertyRepository } from '@/repositories/property-repository';
 
-interface ICreateLoftUseCaseRequest {
-	address: Address
+interface ICreateHouseUseCaseRequest {
+    address: Address
 	amenities: number
 	areaSize: number
 	builtYear: number
@@ -35,35 +35,52 @@ interface ICreateLoftUseCaseRequest {
 	laundry?: number
 	livingRoom?: number
 	pool?: number
+    deck: boolean
+    porch: boolean
+    backyard: boolean
+    driveWay: boolean
+    frontYard: boolean
 }
 
-interface ICreateLoftUseCaseResponse {
-    loft: Loft
+interface ICreateHouseUseCaseResponse {
+    house: House
 }
 
-export class CreateLoftUseCase {
+export class CreateHouseUseCase {
 
-	constructor(private propertyRepository: PropertyRepository<Loft>) {}
+	constructor(private propertyRepository: PropertyRepository<House>) {}
 
 	async handle({ address, amenities, areaSize, builtYear, price, condominium,
 		condominiumTax, description, imagesIds, ownerId, sponsorId, status, type,
 		playground = false, furniture = false, gym = false, socialSpace = false,
 		airConditioner = 0, balcony = 0, bathrooms = 0, bedrooms = 0, dinnerRoom = 0,
-		elevator = 0, floors = 0, garage = 0, heat = 0, kitchen = 0, laundry = 0, livingRoom = 0, pool = 0
-	}: ICreateLoftUseCaseRequest): Promise<ICreateLoftUseCaseResponse> {
+		elevator = 0, floors = 0, garage = 0, heat = 0, kitchen = 0, laundry = 0, livingRoom = 0, pool = 0,
+		deck = false, porch = false, backyard = false, driveWay = false, frontYard = false
+	}: ICreateHouseUseCaseRequest): Promise<ICreateHouseUseCaseResponse> {
 
-		const loft = Loft.create({
+		const house = House.create({
 			address,
-			airConditioner,
 			amenities,
 			areaSize,
-			balcony,
-			bathrooms,
-			bedrooms,
+			backyard,
 			builtYear,
 			condominium,
 			condominiumTax,
+			deck,
 			description,
+			driveWay,
+			frontYard,
+			imagesIds,
+			ownerId,
+			porch,
+			price,
+			sponsorId,
+			status,
+			type,
+			airConditioner,
+			balcony,
+			bathrooms,
+			bedrooms,
 			dinnerRoom,
 			elevator,
 			floors,
@@ -71,22 +88,16 @@ export class CreateLoftUseCase {
 			garage,
 			gym,
 			heat,
-			imagesIds,
 			kitchen,
 			laundry,
 			livingRoom,
-			ownerId,
 			playground,
 			pool,
-			price,
-			socialSpace,
-			sponsorId,
-			status,
-			type
+			socialSpace
 		});
 
-		await this.propertyRepository.create(loft);
+		await this.propertyRepository.create(house);
 
-		return { loft };
+		return { house };
 	}
 }
