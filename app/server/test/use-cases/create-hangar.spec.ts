@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { Address } from '@/entities/value-objects/address';
-import { PropertyStatus } from '@/entities/enums/property-status';
-import { ResidentialType } from '@/entities/enums/residential-type';
 import { CreateHangarUseCase } from '@/use-cases/create-hangar';
-import { InMemoryHangarRepository } from 'test/repositories/in-memory-hangar-repository';
 import { CommercialType } from '@/entities/enums/commercial-type';
+import { PropertyStatus } from '@/entities/enums/property-status';
+import { InMemoryHangarRepository } from 'test/repositories/in-memory-hangar-repository';
 
 describe('Create Hangar', () => {
     
