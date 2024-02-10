@@ -7,6 +7,8 @@ export interface IHangarProps extends ICommercialProps {
 
 export class Hangar extends Commercial<IHangarProps> {
     
+	declare protected props: IHangarProps;
+	
 	static create(props: Optional<IHangarProps, 'createdAt'>, id?: string) {
 		return new Hangar({
 			...props,
@@ -15,6 +17,6 @@ export class Hangar extends Commercial<IHangarProps> {
 	}
 
 	get parkingLot(): boolean {
-		return this.parkingLot;
+		return this.props.parkingLot;
 	}
 }

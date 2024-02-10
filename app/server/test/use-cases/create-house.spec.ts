@@ -45,6 +45,7 @@ describe('Create House', () => {
 		});
 
 		expect(house.type).toEqual(ResidentialType.HOUSE);
+		expect(house.driveWay).toBe(true);
 		expect(inMemoryHouseRepository.houses).toHaveLength(1);
 	});
 });

@@ -11,27 +11,29 @@ export interface ICommercialProps extends IPropertyProps {
 
 export abstract class Commercial<Props extends ICommercialProps> extends Property<IPropertyProps> {
     
+	declare protected props: ICommercialProps;
+
 	constructor(props: Props, id?: string) {
 		super(props, id);
 	}
 
 	get office(): boolean {
-		return this.office;
+		return this.props.office;
 	}
 
 	get securitySystem(): boolean {
-		return this.securitySystem;
+		return this.props.securitySystem;
 	}
 
 	get internetAccess(): boolean {
-		return this.internetAccess;
+		return this.props.internetAccess;
 	}
 
 	get restRoom(): number {
-		return this.restRoom;
+		return this.props.restRoom;
 	}
 
 	get type(): CommercialType {
-		return this.type;
+		return this.props.type;
 	}
 }

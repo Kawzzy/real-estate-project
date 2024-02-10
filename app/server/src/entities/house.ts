@@ -11,6 +11,8 @@ export interface IHouseProps extends IResidentialProps {
 
 export class House extends Residential<IHouseProps> {
     
+	declare protected props: IHouseProps;
+
 	static create(props: Optional<IHouseProps, 'createdAt'>, id?: string) {
 		return new House({
 			...props,
@@ -19,22 +21,22 @@ export class House extends Residential<IHouseProps> {
 	}
 
 	get deck(): boolean {
-		return this.deck;
+		return this.props.deck;
 	}
 
 	get porch(): boolean {
-		return this.porch;
+		return this.props.porch;
 	}
 
 	get backyard(): boolean {
-		return this.backyard;
+		return this.props.backyard;
 	}
 
 	get driveWay(): boolean {
-		return this.driveWay;
+		return this.props.driveWay;
 	}
 
 	get frontYard(): boolean {
-		return this.frontYard;
+		return this.props.frontYard;
 	}
 }
