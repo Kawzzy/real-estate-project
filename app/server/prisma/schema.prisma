@@ -8,13 +8,14 @@ datasource db {
 }
 
 model ZipCodeInfo {
-  zipCode      Int       @id @unique
+  zipCode      Int      @id @unique
   street       String
   neighborhood String
   city         String
   state        String
-  createdAt    DateTime  @default(now())
-  addresses    Address[]
+  createdAt    DateTime @default(now())
+
+  addresses Address[]
 }
 
 model Address {
@@ -24,6 +25,8 @@ model Address {
   zipCodeInfoId Int
   createdAt     DateTime @default(now())
 
+  company Company[]
+
   zipCode ZipCodeInfo @relation(fields: [zipCodeInfoId], references: [zipCode])
 }
 
@@ -32,7 +35,9 @@ model Contact {
   telephone String
   cellphone String
   email     String @unique
-  User      User[]
+
+  user    User[]
+  company Company[]
 }
 
 model User {
@@ -40,7 +45,22 @@ model User {
   cod       Int      @unique @default(autoincrement())
   name      String
   contactId Int
+  companyId String?
   createdAt DateTime @default(now())
 
+  contact Contact  @relation(fields: [contactId], references: [id])
+  company Company? @relation(fields: [companyId], references: [id])
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  cod       Int      @unique @default(autoincrement())
+  contactId Int
+  addressId Int
+  createdAt DateTime @default(now())
+
+  agents User[]
+
   contact Contact @relation(fields: [contactId], references: [id])
+  address Address @relation(fields: [addressId], references: [id])
 }
