@@ -32,4 +32,15 @@ model Contact {
   telephone String
   cellphone String
   email     String @unique
+  User      User[]
+}
+
+model User {
+  id        String   @id @default(uuid())
+  cod       Int      @unique @default(autoincrement())
+  name      String
+  contactId Int
+  createdAt DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id])
 }
