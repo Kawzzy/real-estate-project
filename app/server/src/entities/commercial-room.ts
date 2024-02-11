@@ -1,9 +1,7 @@
 import { Optional } from '@/utils/optional';
 import { ICommercialProps, Commercial } from './commercial';
 
-export interface ICommercialRoomProps extends ICommercialProps {
-    furniture: boolean
-}
+export interface ICommercialRoomProps extends ICommercialProps {}
 
 export class CommercialRoom extends Commercial<ICommercialRoomProps> {
     
@@ -14,9 +12,5 @@ export class CommercialRoom extends Commercial<ICommercialRoomProps> {
 			...props,
 			createdAt: props.createdAt ?? new Date()
 		}, id);
-	}
-
-	get furniture(): boolean {
-		return this.props.furniture;
 	}
 }

@@ -10,6 +10,7 @@ export interface IPropertyProps {
 	price: number
 	areaSize: number
 	floors?: number
+	furniture?: boolean
 	builtYear: number
 	imagesIds: string[]
 	ownerId: string
@@ -51,6 +52,10 @@ export abstract class Property<Props extends IPropertyProps> extends Entity<IPro
 
 	get floors(): number {
 		return this.props.floors;
+	}
+
+	get furniture(): boolean {
+		return this.props.furniture;
 	}
 
 	get builtYear(): number {

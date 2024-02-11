@@ -20,7 +20,6 @@ export interface IResidentialProps extends IPropertyProps {
     playground?: boolean
     gym?: boolean
     socialSpace?: boolean
-	furniture?: boolean
     type: ResidentialType
 }
 
@@ -102,10 +101,6 @@ export abstract class Residential<Props extends IResidentialProps> extends Prope
 
 	get socialSpace(): boolean {
 		return this.props.socialSpace;
-	}
-
-	get furniture(): boolean {
-		return this.props.furniture;
 	}
 
 	get type(): ResidentialType {
