@@ -26,3 +26,10 @@ model Address {
 
   zipCode ZipCodeInfo @relation(fields: [zipCodeInfoId], references: [zipCode])
 }
+
+model Contact {
+  id        Int    @id @default(autoincrement())
+  telephone String
+  cellphone String
+  email     String @unique
+}
