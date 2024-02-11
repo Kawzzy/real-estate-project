@@ -6,3 +6,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model ZipCodeInfo {
+  zipCode      Int      @id @unique
+  street       String
+  neighborhood String
+  city         String
+  state        String
+  createdAt    DateTime @default(now())
+}
