@@ -19,48 +19,137 @@ model ZipCodeInfo {
 }
 
 model Address {
-  id            Int      @id @default(autoincrement())
-  number        Int
-  complement    String
+  id         Int      @id @default(autoincrement())
+  number     Int
+  complement String
+  createdAt  DateTime @default(now())
+
+  company    Company?
+  properties Property[]
+
+  zipCode       ZipCodeInfo @relation(fields: [zipCodeInfoId], references: [zipCode])
   zipCodeInfoId Int
-  createdAt     DateTime @default(now())
-
-  company Company[]
-
-  zipCode ZipCodeInfo @relation(fields: [zipCodeInfoId], references: [zipCode])
 }
 
 model Contact {
-  id        Int    @id @default(autoincrement())
-  telephone String
+  id        Int     @id @default(autoincrement())
+  telephone String?
   cellphone String
-  email     String @unique
+  email     String  @unique
 
-  user    User[]
-  company Company[]
+  user    User?
+  company Company?
 }
 
 model User {
   id        String   @id @default(uuid())
   cod       Int      @unique @default(autoincrement())
   name      String
-  contactId Int
-  companyId String?
   createdAt DateTime @default(now())
 
-  contact Contact  @relation(fields: [contactId], references: [id])
-  company Company? @relation(fields: [companyId], references: [id])
+  ownerProperties   Property[] @relation("OwnerProperties")
+  sponsorProperties Property[] @relation("SponsorProperties")
+
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId Int     @unique
+
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
 }
 
 model Company {
   id        String   @id @default(uuid())
   cod       Int      @unique @default(autoincrement())
-  contactId Int
-  addressId Int
   createdAt DateTime @default(now())
 
-  agents User[]
+  agents     User[]
+  properties Property[]
 
-  contact Contact @relation(fields: [contactId], references: [id])
-  address Address @relation(fields: [addressId], references: [id])
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId Int     @unique
+
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int     @unique
+}
+
+model Property {
+  id             String    @id @default(uuid())
+  cod            Int       @unique @default(autoincrement())
+  description    String
+  condominium    String
+  condominiumTax Decimal
+  price          Decimal
+  areaSize       Int
+  builtYear      Int
+  amenities      Int
+  floors         Int       @default(1)
+  bedrooms       Int       @default(1)
+  bathrooms      Int       @default(1)
+  kitchen        Int       @default(1)
+  pool           Int       @default(0)
+  heat           Int       @default(0)
+  airConditioner Int       @default(0)
+  balcony        Int       @default(0)
+  laundry        Int       @default(0)
+  garage         Int       @default(0)
+  elevator       Int       @default(0)
+  livingRoom     Int       @default(0)
+  dinnerRoom     Int       @default(0)
+  restRoom       Int       @default(0)
+  playground     Boolean   @default(false)
+  gym            Boolean   @default(false)
+  socialSpace    Boolean   @default(false)
+  furniture      Boolean   @default(false)
+  office         Boolean   @default(false)
+  securitySystem Boolean   @default(false)
+  internetAccess Boolean   @default(false)
+  parkingLot     Boolean   @default(false)
+  deck           Boolean   @default(false)
+  porch          Boolean   @default(false)
+  backyard       Boolean   @default(false)
+  driveWay       Boolean   @default(false)
+  frontYard      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime?
+
+  status          PropertyStatus
+  type            PropertyType
+  commercialType  CommercialType?
+  residentialType ResidentialType?
+
+  ownerId String
+  owner   User   @relation("OwnerProperties", fields: [ownerId], references: [id])
+
+  sponsorId String
+  sponsor   User   @relation("SponsorProperties", fields: [sponsorId], references: [id])
+
+  company   Company? @relation(fields: [companyId], references: [id])
+  companyId String?
+
+  address   Address @relation(fields: [addressId], references: [id])
+  addressId Int
+}
+
+enum PropertyStatus {
+  FOR_RENT
+  FOR_BUY
+  RENTED
+  SOLD
+}
+
+enum PropertyType {
+  RESIDENTIAL
+  COMMERCIAL
+}
+
+enum ResidentialType {
+  APARTMENT
+  STUDIO
+  HOUSE
+  LOFT
+}
+
+enum CommercialType {
+  COMMERCIAL_ROOM
+  HANGAR
 }
