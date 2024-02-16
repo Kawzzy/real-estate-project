@@ -128,6 +128,18 @@ model Property {
 
   address   Address @relation(fields: [addressId], references: [id])
   addressId Int
+
+  images Attachment[]
+}
+
+model Attachment {
+  id         String   @id @default(uuid())
+  title      String
+  url        String
+  uploadedAt DateTime @default(now())
+
+  property   Property @relation(fields: [propertyId], references: [id])
+  propertyId String
 }
 
 enum PropertyStatus {
