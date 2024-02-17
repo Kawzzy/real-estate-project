@@ -25,7 +25,7 @@ describe('Create House', () => {
 			})
 		});
 		
-		const { house } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			amenities: 8,
 			areaSize: 70,
@@ -44,8 +44,21 @@ describe('Create House', () => {
 			porch: false
 		});
 
-		expect(house.type).toEqual(ResidentialType.HOUSE);
-		expect(house.driveWay).toBe(true);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				house: expect.objectContaining({
+					type: ResidentialType.HOUSE
+				})
+			})
+		);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				house: expect.objectContaining({
+					driveWay: true
+				})
+			})
+		);
 		expect(inMemoryHouseRepository.houses).toHaveLength(1);
 	});
 });

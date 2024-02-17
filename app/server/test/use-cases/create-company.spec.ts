@@ -39,7 +39,7 @@ describe('Create Company', () => {
 			email: 'alles@imobtest.com'
 		});
         
-		const { company } = await sut.handle({
+		const result = await sut.handle({
 			name: companyName,
 			address,
 			contact,
@@ -47,7 +47,13 @@ describe('Create Company', () => {
 			propertiesIds: []
 		});
 
-		expect(company.id).toEqual(expect.any(String));
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				company: expect.objectContaining({
+					id: expect.any(String)
+				})
+			}));
 		expect(inMemoryCompanyRepository.companies).toHaveLength(1);
 		expect(inMemoryCompanyRepository.companies[0].name).toEqual(companyName);
 	});
@@ -82,14 +88,15 @@ describe('Create Company', () => {
 			propertiesIds: []
 		}));
         
-		await expect(() =>
-			sut.handle({
-				name: companyName,
-				address,
-				contact,
-				agentsIds: [],
-				propertiesIds: []
-			})
-		).rejects.toBeInstanceOf(CompanyAlreadyExistsError);
+		const result = await sut.handle({
+			name: companyName,
+			address,
+			contact,
+			agentsIds: [],
+			propertiesIds: []
+		});
+
+		expect(result.isLeft()).toBe(true);
+		expect(result.value).toBeInstanceOf(CompanyAlreadyExistsError);
 	});
 });

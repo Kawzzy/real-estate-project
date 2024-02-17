@@ -18,10 +18,23 @@ describe('Create ZipCodeInfo', () => {
 	it('should create a ZipCodeInfo', async () => {
 		const zipCode = '89040-100';
 
-		const { zipCodeInfo } = await sut.handle({ zipCode });
+		const result = await sut.handle({ zipCode });
 
-		expect(zipCodeInfo.id).toEqual(expect.any(String));
-		expect(zipCodeInfo.zipCode).toEqual(zipCode);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				zipCodeInfo: expect.objectContaining({
+					id: expect.any(String)
+				})
+			})
+		);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				zipCodeInfo: expect.objectContaining({
+					zipCode
+				})
+			})
+		);
 		expect(inMemoryZipCodeInfoRepository.zipCodesInfo).toHaveLength(1);
 	});
 
@@ -40,8 +53,8 @@ describe('Create ZipCodeInfo', () => {
         
 		inMemoryZipCodeInfoRepository.zipCodesInfo.push(zipCodeInfo);
 
-		await expect(() =>
-			sut.handle({zipCode})
-		).rejects.toBeInstanceOf(ZipCodeAlreadyExistsError);
+		const result = await sut.handle({zipCode});
+		
+		expect(result.value).toBeInstanceOf(ZipCodeAlreadyExistsError);
 	});
 });

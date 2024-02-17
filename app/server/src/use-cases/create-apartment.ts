@@ -1,3 +1,4 @@
+import { Either, right } from '@/utils/either';
 import { Apartment } from '@/entities/apartment';
 import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
@@ -37,9 +38,7 @@ interface ICreateApartmentUseCaseRequest {
 	pool?: number
 }
 
-interface ICreateApartmentUseCaseResponse {
-    apartment: Apartment
-}
+type ICreateApartmentUseCaseResponse = Either <null, { apartment: Apartment }>
 
 export class CreateApartmentUseCase {
 
@@ -87,6 +86,6 @@ export class CreateApartmentUseCase {
 
 		await this.propertyRepository.create(apartment);
 
-		return { apartment };
+		return right({ apartment });
 	}
 }

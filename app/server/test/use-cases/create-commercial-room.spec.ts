@@ -25,7 +25,7 @@ describe('Create CommercialRoom', () => {
 			})
 		});
 		
-		const { commercialRoom } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			areaSize: 200,
 			builtYear: 2021,
@@ -44,8 +44,21 @@ describe('Create CommercialRoom', () => {
 			type: CommercialType.COMMERCIAL_ROOM
 		});
 
-		expect(commercialRoom.type).toEqual(CommercialType.COMMERCIAL_ROOM);
-		expect(commercialRoom.furniture).toBe(true);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				commercialRoom: expect.objectContaining({
+					type: CommercialType.COMMERCIAL_ROOM
+				})
+			})
+		);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				commercialRoom: expect.objectContaining({
+					furniture: true
+				})
+			})
+		);
 		expect(inMemoryCommercialRoomRepository.commercialRooms).toHaveLength(1);
 	});
 });

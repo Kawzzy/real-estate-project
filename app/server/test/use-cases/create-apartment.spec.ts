@@ -26,7 +26,7 @@ describe('Create Apartment', () => {
 			})
 		});
 		
-		const { apartment } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			amenities: 5,
 			areaSize: 45,
@@ -42,7 +42,14 @@ describe('Create Apartment', () => {
 			type: ResidentialType.APARTMENT
 		});
 
-		expect(apartment.type).toEqual(ResidentialType.APARTMENT);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				apartment: expect.objectContaining({
+					type: ResidentialType.APARTMENT
+				})
+			})
+		);
 		expect(inMemoryApartmentRepository.apartments).toHaveLength(1);
 	});
 });

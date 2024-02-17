@@ -1,3 +1,4 @@
+import { Either, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { CommercialRoom } from '@/entities/commercial-room';
 import { CommercialType } from '@/entities/enums/commercial-type';
@@ -23,9 +24,7 @@ interface ICreateCommercialRoomUseCaseRequest {
     furniture: boolean
 }
 
-interface ICreateCommercialRoomUseCaseResponse {
-    commercialRoom: CommercialRoom
-}
+type ICreateCommercialRoomUseCaseResponse = Either<null, { commercialRoom: CommercialRoom }>
 
 export class CreateCommercialRoomUseCase {
 
@@ -56,6 +55,6 @@ export class CreateCommercialRoomUseCase {
 
 		this.propertyRepository.create(commercialRoom);
 
-		return { commercialRoom };
+		return right({ commercialRoom });
 	}
 }

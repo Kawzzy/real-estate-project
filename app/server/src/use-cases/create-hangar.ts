@@ -1,4 +1,5 @@
 import { Hangar } from '@/entities/hangar';
+import { Either, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
@@ -23,9 +24,7 @@ interface ICreateHangarUseCaseRequest {
     parkingLot: boolean
 }
 
-interface ICreateHangarUseCaseResponse {
-    hangar: Hangar
-}
+type ICreateHangarUseCaseResponse = Either<null, { hangar: Hangar }>
 
 export class CreateHangarUseCase {
 
@@ -56,6 +55,6 @@ export class CreateHangarUseCase {
 
 		this.propertyRepository.create(hangar);
 
-		return { hangar };
+		return right({ hangar });
 	}
 }

@@ -25,7 +25,7 @@ describe('Create Hangar', () => {
 			})
 		});
 		
-		const { hangar } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			areaSize: 200,
 			builtYear: 2021,
@@ -44,8 +44,21 @@ describe('Create Hangar', () => {
 			type: CommercialType.HANGAR
 		});
 
-		expect(hangar.type).toEqual(CommercialType.HANGAR);
-		expect(hangar.parkingLot).toBe(true);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				hangar: expect.objectContaining({
+					type: CommercialType.HANGAR
+				})
+			})
+		);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				hangar: expect.objectContaining({
+					parkingLot: true
+				})
+			})
+		);
 		expect(inMemoryHangarRepository.hangars).toHaveLength(1);
 	});
 });

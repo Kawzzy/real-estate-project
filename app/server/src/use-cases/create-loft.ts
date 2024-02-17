@@ -1,4 +1,5 @@
 import { Loft } from '@/entities/loft';
+import { Either, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
@@ -37,9 +38,7 @@ interface ICreateLoftUseCaseRequest {
 	pool?: number
 }
 
-interface ICreateLoftUseCaseResponse {
-    loft: Loft
-}
+type ICreateLoftUseCaseResponse = Either <null, { loft: Loft }>
 
 export class CreateLoftUseCase {
 
@@ -87,6 +86,6 @@ export class CreateLoftUseCase {
 
 		await this.propertyRepository.create(loft);
 
-		return { loft };
+		return right({ loft });
 	}
 }

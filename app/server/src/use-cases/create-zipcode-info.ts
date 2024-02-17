@@ -1,3 +1,4 @@
+import { Either, left, right } from '@/utils/either';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { getZipCodeInfo } from '@/utils/get-zipcode-info';
 import { ZipCodeInfoRepository } from '@/repositories/zipcode-info-repository';
@@ -7,9 +8,7 @@ interface CreateZipCodeInfoUseCaseRequest {
     zipCode: string
 }
 
-interface CreateZipCodeInfoUseCaseResponse {
-    zipCodeInfo: ZipCodeInfo
-}
+type CreateZipCodeInfoUseCaseResponse = Either<ZipCodeAlreadyExistsError, { zipCodeInfo: ZipCodeInfo }>
 
 export class CreateZipCodeInfoUseCase {
 
@@ -20,7 +19,7 @@ export class CreateZipCodeInfoUseCase {
 		const existingZipCodeInfo = await this.zipCodeInfoRepository.findByZipCode(zipCode);
 
 		if (existingZipCodeInfo) {
-			throw new ZipCodeAlreadyExistsError(zipCode);
+			return left(new ZipCodeAlreadyExistsError(zipCode));
 		}
 
 		const zipCodeData = await getZipCodeInfo(zipCode);
@@ -35,7 +34,6 @@ export class CreateZipCodeInfoUseCase {
 		
 		await this.zipCodeInfoRepository.create(zipCodeInfo);
 		
-		return { zipCodeInfo };
+		return right({ zipCodeInfo });
 	}
-
 }

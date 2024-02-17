@@ -25,7 +25,7 @@ describe('Create Studio', () => {
 			})
 		});
 		
-		const { studio } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			amenities: 5,
 			areaSize: 45,
@@ -41,7 +41,14 @@ describe('Create Studio', () => {
 			type: ResidentialType.STUDIO
 		});
 
-		expect(studio.type).toEqual(ResidentialType.STUDIO);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				studio: expect.objectContaining({
+					type: ResidentialType.STUDIO
+				})
+			})
+		);
 		expect(inMemoryStudioRepository.studios).toHaveLength(1);
 	});
 });

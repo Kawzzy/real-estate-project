@@ -1,4 +1,5 @@
 import { Studio } from '@/entities/studio';
+import { Either, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
@@ -37,9 +38,7 @@ interface ICreateStudioUseCaseRequest {
     type: ResidentialType
 }
 
-interface ICreateStudioUseCaseResponse {
-    studio: Studio
-}
+type ICreateStudioUseCaseResponse = Either< null, { studio: Studio }>
 
 export class CreateStudioUseCase {
 
@@ -87,6 +86,6 @@ export class CreateStudioUseCase {
 
 		await this.propertyRepository.create(studio);
 
-		return { studio };
+		return right({ studio });
 	}
 }

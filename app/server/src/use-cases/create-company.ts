@@ -1,4 +1,5 @@
 import { Company } from '@/entities/company';
+import { Either, left, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { Contact } from '@/entities/value-objects/contact';
 import { CompanyRepository } from '@/repositories/company-repository';
@@ -12,9 +13,7 @@ interface CreateCompanyUseCaseRequest {
     address: Address
 }
 
-interface CreateCompanyUseCaseResponse {
-    company: Company
-}
+type CreateCompanyUseCaseResponse  = Either<CompanyAlreadyExistsError, { company: Company }>
 
 export class CreateCompanyUseCase {
 
@@ -25,7 +24,7 @@ export class CreateCompanyUseCase {
 		const existingCompany = await this.companyRepository.findByName(name);
 
 		if (existingCompany) {
-			throw new CompanyAlreadyExistsError(name);
+			return left(new CompanyAlreadyExistsError(name));
 		}
 
 		const company = Company.create({
@@ -38,6 +37,6 @@ export class CreateCompanyUseCase {
 
 		await this.companyRepository.create(company);
 
-		return { company };
+		return right({ company });
 	}
 }

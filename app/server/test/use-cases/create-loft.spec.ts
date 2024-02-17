@@ -25,7 +25,7 @@ describe('Create Loft', () => {
 			})
 		});
 		
-		const { loft } = await sut.handle({
+		const result = await sut.handle({
 			address,
 			amenities: 5,
 			areaSize: 45,
@@ -41,7 +41,13 @@ describe('Create Loft', () => {
 			type: ResidentialType.LOFT
 		});
 
-		expect(loft.type).toEqual(ResidentialType.LOFT);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				loft: expect.objectContaining({
+					type:ResidentialType.LOFT
+				})
+			}));
 		expect(inMemoryLoftRepository.lofts).toHaveLength(1);
 	});
 });

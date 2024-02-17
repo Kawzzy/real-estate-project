@@ -25,14 +25,23 @@ describe('Create Agent', () => {
 			email: agentEmail
 		});
         
-		const { agent } = await sut.handle({
+		const result = await sut.handle({
 			name: agentName,
 			contact,
 			companyId: '1',
 			propertiesIds: []
 		});
 
-		expect(agent.contact.email).toEqual(agentEmail);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				agent: expect.objectContaining({
+					contact: expect.objectContaining({
+						email: agentEmail
+					})
+				})
+			})
+		);
 		expect(inMemoryAgentRepository.agents).toHaveLength(1);
 		expect(inMemoryAgentRepository.agents[0].name).toEqual(agentName);
 	});
@@ -53,13 +62,14 @@ describe('Create Agent', () => {
 			propertiesIds: []
 		}));
 
-		await expect(() =>
-			sut.handle({
-				name: 'John Doe',
-				contact,
-				companyId: '1',
-				propertiesIds: []
-			})
-		).rejects.toBeInstanceOf(EmailAlreadyExistsError);
+		const result = await sut.handle({
+			name: 'John Doe',
+			contact,
+			companyId: '1',
+			propertiesIds: []
+		});
+		
+		expect(result.isLeft()).toBe(true);
+		expect(result.value).toBeInstanceOf(EmailAlreadyExistsError);
 	});
 });

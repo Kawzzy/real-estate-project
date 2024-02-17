@@ -1,4 +1,5 @@
 import { House } from '@/entities/house';
+import { Either, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
@@ -42,9 +43,7 @@ interface ICreateHouseUseCaseRequest {
     frontYard: boolean
 }
 
-interface ICreateHouseUseCaseResponse {
-    house: House
-}
+type ICreateHouseUseCaseResponse = Either<null, { house: House }>
 
 export class CreateHouseUseCase {
 
@@ -98,6 +97,6 @@ export class CreateHouseUseCase {
 
 		await this.propertyRepository.create(house);
 
-		return { house };
+		return right({ house });
 	}
 }

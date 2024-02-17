@@ -25,24 +25,31 @@ describe('Create Owner', () => {
 			email: ownerEmail
 		});
         
-		const { owner } = await sut.handle({
+		const result = await sut.handle({
 			name: ownerName,
 			contact,
 			propertiesIds: []
 		});
 
-		expect(owner.contact.email).toEqual(ownerEmail);
+		expect(result.isRight()).toBe(true);
+		expect(result.value).toEqual(
+			expect.objectContaining({
+				owner: expect.objectContaining({
+					contact: expect.objectContaining({
+						email: ownerEmail
+					})
+				})
+			})
+		);
 		expect(inMemoryOwnerRepository.owners).toHaveLength(1);
 		expect(inMemoryOwnerRepository.owners[0].name).toEqual(ownerName);
 	});
 
 	it('shouldn\'t create an Owner with same email', async () => {
 
-		const ownerEmail = 'owner@test.com';
-        
 		const contact = Contact.create({
 			cellphone: '47 992-145-543',
-			email: ownerEmail
+			email: 'owner@test.com'
 		});
 
 		inMemoryOwnerRepository.owners.push(Owner.create({
@@ -50,13 +57,14 @@ describe('Create Owner', () => {
 			contact,
 			propertiesIds: []
 		}));
-
-		await expect(() =>
-			sut.handle({
-				name: 'John Doe',
-				contact,
-				propertiesIds: []
-			})
-		).rejects.toBeInstanceOf(EmailAlreadyExistsError);
+		
+		const result = await sut.handle({
+			name: 'John Doe',
+			contact,
+			propertiesIds: []
+		});
+		
+		expect(result.isLeft()).toBe(true);
+		expect(result.value).toBeInstanceOf(EmailAlreadyExistsError);
 	});
 });
