@@ -1,7 +1,7 @@
 import { Entity } from './entity';
+import { Contact } from './contact';
 import { Optional } from '@/utils/optional';
 import { Address } from './value-objects/address';
-import { Contact } from './value-objects/contact';
 
 export interface ICompanyProps {
     cod?: number

@@ -1,7 +1,7 @@
 import { Company } from '@/entities/company';
+import { Contact } from '@/entities/contact';
 import { Either, left, right } from '@/utils/either';
 import { Address } from '@/entities/value-objects/address';
-import { Contact } from '@/entities/value-objects/contact';
 import { CompanyRepository } from '@/repositories/company-repository';
 import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error';
 

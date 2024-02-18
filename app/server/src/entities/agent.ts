@@ -1,11 +1,10 @@
 import { Entity } from './entity';
 import { Optional } from '@/utils/optional';
-import { Contact } from './value-objects/contact';
 
 export interface IAgentProps {
     cod?: number;
     name: string;
-    contact: Contact;
+    contactId: string;
     companyId: string;
     propertiesIds: string[];
 	createdAt: Date
@@ -28,8 +27,8 @@ export class Agent extends Entity<IAgentProps> {
 		return this.props.name;
 	}
     
-	get contact(): Contact {
-		return this.props.contact;
+	get contactId(): string {
+		return this.props.contactId;
 	}
     
 	get companyId(): string {

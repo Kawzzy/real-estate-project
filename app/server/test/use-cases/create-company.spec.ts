@@ -1,8 +1,8 @@
 import { Company } from '@/entities/company';
+import { Contact } from '@/entities/contact';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { Address } from '@/entities/value-objects/address';
-import { Contact } from '@/entities/value-objects/contact';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
 import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error';
 import { InMemoryCompanyRepository } from 'test/repositories/in-memory-company-repository';

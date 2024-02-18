@@ -1,11 +1,10 @@
 import { Entity } from './entity';
 import { Optional } from '@/utils/optional';
-import { Contact } from './value-objects/contact';
 
 export interface IOwnerProps {
     cod?: number
     name: string
-    contact: Contact
+    contactId: string
     propertiesIds: string[]
 	createdAt: Date
 }
@@ -27,8 +26,8 @@ export class Owner extends Entity<IOwnerProps> {
 		return this.props.name;
 	}
     
-	get contact(): Contact {
-		return this.props.contact;
+	get contactId(): string {
+		return this.props.contactId;
 	}
     
 	get propertiesIds(): string[] {

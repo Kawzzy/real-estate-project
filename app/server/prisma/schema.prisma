@@ -32,10 +32,11 @@ model Address {
 }
 
 model Contact {
-  id        Int     @id @default(autoincrement())
+  id        String   @id @default(uuid())
   telephone String?
   cellphone String
-  email     String  @unique
+  email     String   @unique
+  createdAt DateTime @default(now())
 
   user    User?
   company Company?
@@ -51,7 +52,7 @@ model User {
   sponsorProperties Property[] @relation("SponsorProperties")
 
   contact   Contact @relation(fields: [contactId], references: [id])
-  contactId Int     @unique
+  contactId String  @unique
 
   company   Company? @relation(fields: [companyId], references: [id])
   companyId String?
@@ -66,7 +67,7 @@ model Company {
   properties Property[]
 
   contact   Contact @relation(fields: [contactId], references: [id])
-  contactId Int     @unique
+  contactId String  @unique
 
   address   Address @relation(fields: [addressId], references: [id])
   addressId Int     @unique

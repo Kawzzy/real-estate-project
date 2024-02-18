@@ -1,44 +1,46 @@
 import { Agent } from '@/entities/agent';
+import { Contact } from '@/entities/contact';
 import { describe, beforeEach, it, expect } from 'vitest';
-import { Contact } from '@/entities/value-objects/contact';
 import { CreateAgentUseCase } from '@/use-cases/create-agent';
 import { EmailAlreadyExistsError } from '@/errors/email-already-exists-error';
 import { InMemoryAgentRepository } from 'test/repositories/in-memory-agent-repository';
+import { InMemoryContactRepository } from 'test/repositories/in-memory-contact-repository';
 
 let sut: CreateAgentUseCase;
+let inMemoryContactRepository: InMemoryContactRepository;
 let inMemoryAgentRepository: InMemoryAgentRepository;
 
 describe('Create Agent', () => {
 
 	beforeEach(() => {
-		inMemoryAgentRepository = new InMemoryAgentRepository();
-		sut = new CreateAgentUseCase(inMemoryAgentRepository);
+		inMemoryContactRepository = new InMemoryContactRepository();
+		inMemoryAgentRepository = new InMemoryAgentRepository(inMemoryContactRepository);
+		sut = new CreateAgentUseCase(inMemoryContactRepository, inMemoryAgentRepository);
 	});
 
 	it('should create an Agent', async () => {
 
 		const agentName = 'John Doe';
+		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
-        
-		const contact = Contact.create({
-			cellphone: '47 992-145-543',
-			email: agentEmail
-		});
         
 		const result = await sut.handle({
 			name: agentName,
-			contact,
+			cellphone: agentCellphone,
+			email: agentEmail,
 			companyId: '1',
 			propertiesIds: []
 		});
+
+		expect(inMemoryContactRepository.contacts).toHaveLength(1);
+
+		const contactId = inMemoryContactRepository.contacts[0].id;
 
 		expect(result.isRight()).toBe(true);
 		expect(result.value).toEqual(
 			expect.objectContaining({
 				agent: expect.objectContaining({
-					contact: expect.objectContaining({
-						email: agentEmail
-					})
+					contactId
 				})
 			})
 		);
@@ -48,28 +50,33 @@ describe('Create Agent', () => {
 
 	it('shouldn\'t create an Agent with same email', async () => {
 
+		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
         
 		const contact = Contact.create({
-			cellphone: '47 992-145-543',
+			cellphone: agentCellphone,
 			email: agentEmail
 		});
 
+		inMemoryContactRepository.contacts.push(contact);
+
 		inMemoryAgentRepository.agents.push(Agent.create({
 			name: 'Mr. Dre',
-			contact,
+			contactId: contact.id,
 			companyId: '1',
 			propertiesIds: []
 		}));
 
 		const result = await sut.handle({
 			name: 'John Doe',
-			contact,
+			cellphone: agentCellphone,
+			email: agentEmail,
 			companyId: '1',
 			propertiesIds: []
 		});
 		
 		expect(result.isLeft()).toBe(true);
+		expect(inMemoryContactRepository.contacts).toHaveLength(1);
 		expect(result.value).toBeInstanceOf(EmailAlreadyExistsError);
 	});
 });

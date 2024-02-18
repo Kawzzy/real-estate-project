@@ -1,0 +1,23 @@
+@baseUrl = http://localhost:3333
+
+# @name createOwnerAccount
+POST {{baseUrl}}/accounts/owner
+Content-Type: application/json
+
+{
+	"name": "User test",
+	"cellphone": "(47) 992-254-980",
+	"email": "user@test.com"
+}
+
+###
+
+# @name createAgentAccount
+POST {{baseUrl}}/accounts/1/agent
+Content-Type: application/json
+
+{
+	"name": "User test - agent",
+	"cellphone": "(47) 992-654-563",
+	"email": "agent@test.com"
+}
