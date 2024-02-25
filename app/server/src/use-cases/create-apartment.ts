@@ -1,6 +1,6 @@
+import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
 import { Apartment } from '@/entities/apartment';
-import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { PropertyRepository } from '@/repositories/property-repository';

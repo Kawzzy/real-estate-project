@@ -5,7 +5,7 @@ POST {{baseUrl}}/accounts/owner
 Content-Type: application/json
 
 {
-	"name": "User test",
+	"name": "User test - Owner",
 	"cellphone": "(47) 992-254-980",
 	"email": "user@test.com"
 }
@@ -20,4 +20,20 @@ Content-Type: application/json
 	"name": "User test - agent",
 	"cellphone": "(47) 992-654-563",
 	"email": "agent@test.com"
+}
+
+###
+
+# @name createCompanyAccount
+POST {{baseUrl}}/accounts/company
+Content-Type: application/json
+
+{
+	"name": "Alles Imóveis",
+	"telephone": "(47) 3390-3242",
+	"cellphone": "(47) 992-654-563",
+	"email": "alles@imoveis.com",
+	"zipCode": "89040-100",
+	"addressNumber": "142",
+	"addressComplement": "Sala 23"
 }

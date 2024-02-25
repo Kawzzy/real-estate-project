@@ -12,6 +12,8 @@ export interface IZipCodeInfoProps {
 
 export class ZipCodeInfo extends Entity<IZipCodeInfoProps> {
 	
+	declare protected props: IZipCodeInfoProps;
+	
 	static create(props: Optional<IZipCodeInfoProps, 'createdAt'>, id?: string) {
 		return new ZipCodeInfo({
 			...props,

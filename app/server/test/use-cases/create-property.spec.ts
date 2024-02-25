@@ -1,8 +1,8 @@
 import { House } from '@/entities/house';
 import { Hangar } from '@/entities/hangar';
+import { Address } from '@/entities/address';
 import { describe, expect, it } from 'vitest';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
-import { Address } from '@/entities/value-objects/address';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
@@ -10,16 +10,18 @@ import { ResidentialType } from '@/entities/enums/residential-type';
 describe('Create Properties', () => {
 
 	it('should create a Residencial property', async () => {
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode: '',
+			street: '',
+			neighborhood: '',
+			city: '',
+			state: ''
+		});
+
 		const address = Address.create({
 			complement: '5th Avenue',
-			number: 1922,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '',
-				street: '',
-				neighborhood: '',
-				city: '',
-				state: ''
-			})
+			number: '1922',
+			zipCode: zipCodeInfo.zipCode
 		});
         
 		const house = House.create({
@@ -65,16 +67,18 @@ describe('Create Properties', () => {
 	});
 
 	it('should create a Commercial property', async () => {
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode: '',
+			street: '',
+			neighborhood: '',
+			city: '',
+			state: ''
+		});
+		
 		const address = Address.create({
 			complement: '5th Avenue',
-			number: 1922,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '',
-				street: '',
-				neighborhood: '',
-				city: '',
-				state: ''
-			})
+			number: '1922',
+			zipCode: zipCodeInfo.zipCode
 		});
         
 		const hangar = Hangar.create({

@@ -1,6 +1,6 @@
+import { Address } from '@/entities/address';
 import { describe, it, expect } from 'vitest';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
-import { Address } from '@/entities/value-objects/address';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { CreateApartmentUseCase } from '@/use-cases/create-apartment';
@@ -14,16 +14,18 @@ describe('Create Apartment', () => {
 		const inMemoryApartmentRepository: InMemoryApartmentRepository = new InMemoryApartmentRepository();
 		const sut: CreateApartmentUseCase = new CreateApartmentUseCase(inMemoryApartmentRepository);
 
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode: '89040-100',
+			street: 'Rua XV',
+			neighborhood: 'Centro',
+			city: 'Blumenau',
+			state: 'SC'
+		});
+		
 		const address = Address.create({
 			complement: 'Block B',
-			number: 402,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '89040-100',
-				street: 'Rua XV',
-				neighborhood: 'Centro',
-				city: 'Blumenau',
-				state: 'SC'
-			})
+			number: '402',
+			zipCode: zipCodeInfo.zipCode
 		});
 		
 		const result = await sut.handle({

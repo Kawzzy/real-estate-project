@@ -1,5 +1,5 @@
 import { Entity } from './entity';
-import { Address } from './value-objects/address';
+import { Address } from './address';
 import { PropertyStatus } from './enums/property-status';
 
 export interface IPropertyProps {

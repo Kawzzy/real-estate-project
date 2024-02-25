@@ -1,48 +1,48 @@
+import { Address } from '@/entities/address';
 import { Company } from '@/entities/company';
 import { Contact } from '@/entities/contact';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { Address } from '@/entities/value-objects/address';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
 import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 import { InMemoryCompanyRepository } from 'test/repositories/in-memory-company-repository';
+import { InMemoryContactRepository } from 'test/repositories/in-memory-contact-repository';
 
 let sut: CreateCompanyUseCase;
+let inMemoryContactRepository: InMemoryContactRepository;
+let inMemoryAddressRepository: InMemoryAddressRepository;
 let inMemoryCompanyRepository: InMemoryCompanyRepository;
 
 describe('Create Company', () => {
     
 	beforeEach(() => {
-		inMemoryCompanyRepository = new InMemoryCompanyRepository();
-		sut = new CreateCompanyUseCase(inMemoryCompanyRepository);
+		inMemoryContactRepository = new InMemoryContactRepository();
+		inMemoryAddressRepository = new InMemoryAddressRepository();
+		inMemoryCompanyRepository = new InMemoryCompanyRepository(inMemoryContactRepository);
+		sut = new CreateCompanyUseCase(inMemoryCompanyRepository, inMemoryContactRepository, inMemoryAddressRepository);
 	});
 
 	it('should create a Company', async () => {
 
 		const companyName = 'Alles Imobiliária';
-
-		const address = Address.create({
-			complement: 'Sala 23',
-			number: 1432,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '89040-100',
-				street: 'Rua XV',
-				neighborhood: 'Centro',
-				city: 'Blumenau',
-				state: 'SC'
-			})
-		});
-
-		const contact = Contact.create({
-			telephone: '47 3390-3242',
-			cellphone: '47 992-145-543',
-			email: 'alles@imobtest.com'
-		});
         
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode: '89040-100',
+			street: 'Rua XV',
+			neighborhood: 'Centro',
+			city: 'Blumenau',
+			state: 'SC'
+		});
+
 		const result = await sut.handle({
 			name: companyName,
-			address,
-			contact,
+			telephone: '47 3390-3242',
+			cellphone: '47 992-145-543',
+			email: 'alles@imobtest.com',
+			zipCodeInfo,
+			addressNumber: '1432',
+			addressComplement: 'Sala 23',
 			agentsIds: [],
 			propertiesIds: []
 		});
@@ -58,40 +58,52 @@ describe('Create Company', () => {
 		expect(inMemoryCompanyRepository.companies[0].name).toEqual(companyName);
 	});
 
-	it('should\'t create a Company with same name', async () => {
+	it('shouldn\'t create a Company with same name', async () => {
         
 		const companyName = 'Alles Imobiliária';
+		const zipCode = '89040-100';
+		const addressNumber = '1432';
+		const addressComplement = 'Sala 23';
+		const telephone = '47 3390-3242';
+		const cellphone = '47 992-145-543';
+		const email = 'alles@imobtest.com';
+
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode,
+			street: 'Rua XV',
+			neighborhood: 'Centro',
+			city: 'Blumenau',
+			state: 'SC'
+		});
 
 		const address = Address.create({
-			complement: 'Sala 23',
-			number: 1432,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '89040-100',
-				street: 'Rua XV',
-				neighborhood: 'Centro',
-				city: 'Blumenau',
-				state: 'SC'
-			})
+			number: addressNumber,
+			complement: addressComplement,
+			zipCode: zipCodeInfo.zipCode
 		});
 
 		const contact = Contact.create({
-			telephone: '47 3390-3242',
-			cellphone: '47 992-145-543',
-			email: 'alles@imobtest.com'
+			telephone,
+			cellphone,
+			email
 		});
         
 		inMemoryCompanyRepository.companies.push(Company.create({
 			name: companyName,
-			address,
-			contact,
+			addressId: address.id,
+			contactId: contact.id,
 			agentsIds: [],
 			propertiesIds: []
 		}));
         
 		const result = await sut.handle({
 			name: companyName,
-			address,
-			contact,
+			telephone,
+			cellphone,
+			email,
+			zipCodeInfo,
+			addressNumber,
+			addressComplement,
 			agentsIds: [],
 			propertiesIds: []
 		});

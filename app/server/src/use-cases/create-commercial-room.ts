@@ -1,5 +1,5 @@
+import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
-import { Address } from '@/entities/value-objects/address';
 import { CommercialRoom } from '@/entities/commercial-room';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';

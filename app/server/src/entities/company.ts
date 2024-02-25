@@ -1,15 +1,13 @@
 import { Entity } from './entity';
-import { Contact } from './contact';
 import { Optional } from '@/utils/optional';
-import { Address } from './value-objects/address';
 
 export interface ICompanyProps {
     cod?: number
     name: string
     agentsIds: string[]
     propertiesIds: string[]
-    contact: Contact
-    address: Address
+    contactId: string
+    addressId: string
 	createdAt: Date
 }
 
@@ -38,12 +36,12 @@ export class Company extends Entity<ICompanyProps> {
 		return this.props.propertiesIds;
 	}
 
-	get contact(): Contact {
-		return this.props.contact;
+	get contactId(): string {
+		return this.props.contactId;
 	}
 
-	get address(): Address {
-		return this.props.address;
+	get addressId(): string {
+		return this.props.addressId;
 	}
 
 	get createdAt(): Date {

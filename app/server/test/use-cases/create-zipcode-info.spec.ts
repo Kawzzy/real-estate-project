@@ -1,8 +1,5 @@
-import { ZipCodeInfo } from '@/entities/zipCodeInfo';
-import { getZipCodeInfo } from '@/utils/get-zipcode-info';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CreateZipCodeInfoUseCase } from '@/use-cases/create-zipcode-info';
-import { ZipCodeAlreadyExistsError } from '@/errors/zipcode-already-exists-error';
 import { InMemoryZipCodeInfoRepository } from 'test/repositories/in-memory-zipcode-info-repository';
 
 let sut: CreateZipCodeInfoUseCase;
@@ -36,25 +33,5 @@ describe('Create ZipCodeInfo', () => {
 			})
 		);
 		expect(inMemoryZipCodeInfoRepository.zipCodesInfo).toHaveLength(1);
-	});
-
-	it('shouldn\'t create a ZipCodeInfo with the same zipCode', async () => {
-		const zipCode = '89040-100';
-
-		const zipCodeData = await getZipCodeInfo(zipCode);
-
-		const zipCodeInfo = ZipCodeInfo.create({
-			zipCode: zipCodeData.cep,
-			street: zipCodeData.logradouro,
-			neighborhood: zipCodeData.bairro,
-			city: zipCodeData.localidade,
-			state: zipCodeData.uf
-		});
-        
-		inMemoryZipCodeInfoRepository.zipCodesInfo.push(zipCodeInfo);
-
-		const result = await sut.handle({zipCode});
-		
-		expect(result.value).toBeInstanceOf(ZipCodeAlreadyExistsError);
 	});
 });

@@ -8,7 +8,7 @@ datasource db {
 }
 
 model ZipCodeInfo {
-  zipCode      Int      @id @unique
+  zipCode      String   @id @unique
   street       String
   neighborhood String
   city         String
@@ -19,8 +19,8 @@ model ZipCodeInfo {
 }
 
 model Address {
-  id         Int      @id @default(autoincrement())
-  number     Int
+  id         String   @id @default(uuid())
+  number     String
   complement String
   createdAt  DateTime @default(now())
 
@@ -28,7 +28,7 @@ model Address {
   properties Property[]
 
   zipCode       ZipCodeInfo @relation(fields: [zipCodeInfoId], references: [zipCode])
-  zipCodeInfoId Int
+  zipCodeInfoId String
 }
 
 model Contact {
@@ -61,6 +61,7 @@ model User {
 model Company {
   id        String   @id @default(uuid())
   cod       Int      @unique @default(autoincrement())
+  name      String
   createdAt DateTime @default(now())
 
   agents     User[]
@@ -70,7 +71,7 @@ model Company {
   contactId String  @unique
 
   address   Address @relation(fields: [addressId], references: [id])
-  addressId Int     @unique
+  addressId String  @unique
 }
 
 model Property {
@@ -128,7 +129,7 @@ model Property {
   companyId String?
 
   address   Address @relation(fields: [addressId], references: [id])
-  addressId Int
+  addressId String
 
   images Attachment[]
 }

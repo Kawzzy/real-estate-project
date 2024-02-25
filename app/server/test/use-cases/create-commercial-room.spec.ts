@@ -1,6 +1,6 @@
+import { Address } from '@/entities/address';
 import { describe, expect, it } from 'vitest';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
-import { Address } from '@/entities/value-objects/address';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { CreateCommercialRoomUseCase } from '@/use-cases/create-commercial-room';
@@ -13,16 +13,18 @@ describe('Create CommercialRoom', () => {
 		const inMemoryCommercialRoomRepository: InMemoryCommercialRoomRepository = new InMemoryCommercialRoomRepository();
 		const sut: CreateCommercialRoomUseCase = new CreateCommercialRoomUseCase(inMemoryCommercialRoomRepository);
 
+		const zipCodeInfo = ZipCodeInfo.create({
+			zipCode: '89040-100',
+			street: 'Rua XV',
+			neighborhood: 'Bairro Comercial',
+			city: 'Blumenau',
+			state: 'SC'
+		});
+
 		const address = Address.create({
 			complement: 'Main hangar',
-			number: 8378,
-			zipCodeInfo: ZipCodeInfo.create({
-				zipCode: '89040-100',
-				street: 'Rua XV',
-				neighborhood: 'Bairro Comercial',
-				city: 'Blumenau',
-				state: 'SC'
-			})
+			number: '8378',
+			zipCode: zipCodeInfo.zipCode
 		});
 		
 		const result = await sut.handle({

@@ -1,6 +1,6 @@
 import { Hangar } from '@/entities/hangar';
+import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
-import { Address } from '@/entities/value-objects/address';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { PropertyRepository } from '@/repositories/property-repository';
