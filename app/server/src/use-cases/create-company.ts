@@ -11,7 +11,7 @@ import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error
 
 interface CreateCompanyUseCaseRequest {
     name: string
-    telephone?: string
+	telephone?: string
 	cellphone: string
 	email: string
     zipCodeInfo: ZipCodeInfo
