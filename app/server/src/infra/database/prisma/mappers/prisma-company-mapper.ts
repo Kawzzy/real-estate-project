@@ -7,6 +7,7 @@ export class PrismaCompanyMapper {
 			id: company.id,
 			cod: company.cod,
 			name: company.name,
+			password: company.password,
 			addressId: company.addressId,
 			contactId: company.contactId,
 			createdAt: company.createdAt
@@ -17,6 +18,7 @@ export class PrismaCompanyMapper {
 		return Company.create({
 			cod: raw.cod,
 			name: raw.name,
+			password: raw.password,
 			contactId: raw.contactId,
 			addressId: raw.addressId,
 			createdAt: raw.createdAt,

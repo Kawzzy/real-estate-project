@@ -7,6 +7,7 @@ export class PrismaOwnerMapper {
 			id: owner.id,
 			cod: owner.cod,
 			name: owner.name,
+			password: owner.password,
 			contactId: owner.contactId,
 			createdAt: owner.createdAt
 		};
@@ -16,6 +17,7 @@ export class PrismaOwnerMapper {
 		return Owner.create({
 			cod: raw.cod,
 			name: raw.name,
+			password: raw.password,
 			contactId: raw.contactId,
 			createdAt: raw.createdAt,
 			propertiesIds: []

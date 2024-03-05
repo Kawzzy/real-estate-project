@@ -4,6 +4,7 @@ import { Optional } from '@/utils/optional';
 export interface ICompanyProps {
     cod?: number
     name: string
+	password: string
     agentsIds: string[]
     propertiesIds: string[]
     contactId: string
@@ -26,6 +27,10 @@ export class Company extends Entity<ICompanyProps> {
 
 	get name(): string {
 		return this.props.name;
+	}
+
+	get password(): string {
+		return this.props.password;
 	}
 
 	get agentsIds(): string[] {

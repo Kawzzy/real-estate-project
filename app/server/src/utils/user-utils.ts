@@ -14,7 +14,8 @@ export const createUserBodySchema = z.object({
 	}, {
 		message: 'Invalid phone number format. Expected format: (dd) ddd-ddd-ddd'
 	}),
-	email: z.string().email()
+	email: z.string().email(),
+	password: z.string().refine(password => password.length >= 8, 'The password needs to have at least 8 characters.')
 });
 
 export type CreateUserBodySchema = z.infer<typeof createUserBodySchema>

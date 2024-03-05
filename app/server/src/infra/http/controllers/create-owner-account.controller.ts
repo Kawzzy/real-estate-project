@@ -9,16 +9,17 @@ export class CreateOwnerController {
 
     @Post()
 	async handle(@Body() body: CreateUserBodySchema) {
-		const { name, telephone, cellphone, email } = createUserBodySchema.parse(body);
-        
+		const { name, telephone, cellphone, email, password } = createUserBodySchema.parse(body);
+		
 		const result = await this.createUser.handle({
 			name,
 			telephone,
 			cellphone,
 			email,
+			password,
 			propertiesIds: []
 		});
-
+		
 		if (result.isLeft()) {
 			const error = result.value;
 

@@ -5,7 +5,6 @@ import { execSync } from 'node:child_process';
 import { PrismaClient } from '@prisma/client';
 
 config({ path: '.env', override: true });
-config({ path: '.env.test', override: true });
 
 const env = envSchema.parse(process.env);
 
@@ -17,7 +16,6 @@ function generateUniqueDatabaseURL(schemaId: string) {
 	}
 
 	const url = new URL(env.DATABASE_URL);
-
 	url.searchParams.set('schema', schemaId);
 
 	return url.toString();
@@ -25,11 +23,11 @@ function generateUniqueDatabaseURL(schemaId: string) {
 
 const schemaId = randomUUID();
 
-beforeAll(() => {
-	const databaseUrl = generateUniqueDatabaseURL(schemaId);
-
-	env.DATABASE_URL = databaseUrl;
-
+beforeAll(async () => {
+	const databaseURL = generateUniqueDatabaseURL(schemaId);
+	
+	process.env.DATABASE_URL = databaseURL;
+	
 	execSync('npx prisma migrate deploy');
 });
 

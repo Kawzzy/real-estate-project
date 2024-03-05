@@ -7,6 +7,7 @@ export class PrismaAgentMapper {
 			id: agent.id,
 			cod: agent.cod,
 			name: agent.name,
+			password: agent.password,
 			contactId: agent.contactId,
 			createdAt: agent.createdAt
 		};
@@ -16,6 +17,7 @@ export class PrismaAgentMapper {
 		return Agent.create({
 			cod: raw.cod,
 			name: raw.name,
+			password: raw.password,
 			companyId: raw.companyId,
 			contactId: raw.contactId,
 			createdAt: raw.createdAt,

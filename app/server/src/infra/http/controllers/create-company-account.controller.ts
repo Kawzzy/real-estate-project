@@ -22,7 +22,8 @@ const createCompanyBodySchema = z.object({
 	}),
 	email: z.string().email(),
 	addressNumber: z.string(),
-	addressComplement: z.string().optional()
+	addressComplement: z.string().optional(),
+	password: z.string().refine(password => password.length >= 8, 'The password needs to have at least 8 characters.')
 });
 
 type CreateCompanyBodySchema = z.infer<typeof createCompanyBodySchema>
@@ -38,7 +39,7 @@ export class CreateCompanyController {
 
     @Post()
 	async handle(@Body() body: CreateCompanyBodySchema, @Request() request: IRequestBody) {
-		const { name, telephone, cellphone, email, addressNumber, addressComplement } = createCompanyBodySchema.parse(body);
+		const { name, telephone, cellphone, email, addressNumber, addressComplement, password } = createCompanyBodySchema.parse(body);
 		const { zipCodeInfo } = request;
 
 		const result = await this.createCompany.handle({
@@ -46,6 +47,7 @@ export class CreateCompanyController {
 			telephone,
 			cellphone,
 			email,
+			password,
 			zipCodeInfo,
 			addressNumber,
 			addressComplement,

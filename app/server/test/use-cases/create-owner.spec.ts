@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import { Owner } from '@/entities/owner';
 import { Contact } from '@/entities/contact';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -21,9 +22,12 @@ describe('Create Owner', () => {
 	it('should create an Owner', async () => {
 
 		const ownerName = 'John Doe';
+		const password = '12345678';
+		const hashedPassword = await hash(password, 8);
         
 		const result = await sut.handle({
 			name: ownerName,
+			password: hashedPassword,
 			cellphone: '47 992-145-543',
 			email: 'owner@test.com',
 			propertiesIds: []
@@ -49,6 +53,8 @@ describe('Create Owner', () => {
 
 		const cellphone = '47 992-145-543';
 		const email = 'owner@test.com';
+		const password = '87654321';
+		const hashedPassword = await hash(password, 8);
 
 		const contact = Contact.create({
 			cellphone,
@@ -59,12 +65,14 @@ describe('Create Owner', () => {
 		
 		inMemoryOwnerRepository.owners.push(Owner.create({
 			name: 'Eminem',
+			password: hashedPassword,
 			contactId: contact.id,
 			propertiesIds: []
 		}));
 		
 		const result = await sut.handle({
 			name: 'John Doe',
+			password: hashedPassword,
 			cellphone,
 			email,
 			propertiesIds: []

@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import { Agent } from '@/entities/agent';
 import { Contact } from '@/entities/contact';
 import { describe, beforeEach, it, expect } from 'vitest';
@@ -23,9 +24,12 @@ describe('Create Agent', () => {
 		const agentName = 'John Doe';
 		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
+		const password = '87654321';
+		const hashedPassword = await hash(password, 8);
         
 		const result = await sut.handle({
 			name: agentName,
+			password: hashedPassword,
 			cellphone: agentCellphone,
 			email: agentEmail,
 			companyId: '1',
@@ -52,6 +56,8 @@ describe('Create Agent', () => {
 
 		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
+		const password = '12345678';
+		const hashedPassword = await hash(password, 8);
         
 		const contact = Contact.create({
 			cellphone: agentCellphone,
@@ -62,6 +68,7 @@ describe('Create Agent', () => {
 
 		inMemoryAgentRepository.agents.push(Agent.create({
 			name: 'Mr. Dre',
+			password: hashedPassword,
 			contactId: contact.id,
 			companyId: '1',
 			propertiesIds: []
@@ -69,6 +76,7 @@ describe('Create Agent', () => {
 
 		const result = await sut.handle({
 			name: 'John Doe',
+			password: hashedPassword,
 			cellphone: agentCellphone,
 			email: agentEmail,
 			companyId: '1',

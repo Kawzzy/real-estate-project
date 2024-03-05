@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import { Agent } from '@/entities/Agent';
 import { Contact } from '@/entities/contact';
 import { Either, left, right } from '@/utils/either';
@@ -7,6 +8,7 @@ import { EmailAlreadyExistsError } from '@/errors/email-already-exists-error';
 
 interface CreateAgentUseCaseRequest {
     name: string
+	password: string
 	telephone?: string
 	cellphone: string
 	email: string
@@ -23,7 +25,7 @@ export class CreateAgentUseCase {
 		private agentRepository: AgentRepository
 	) {}
 
-	async handle({ name, telephone, cellphone, email, companyId, propertiesIds }: CreateAgentUseCaseRequest): Promise<CreateAgentUseCaseResponse> {
+	async handle({ name, password, telephone, cellphone, email, companyId, propertiesIds }: CreateAgentUseCaseRequest): Promise<CreateAgentUseCaseResponse> {
 
 		const existingAgent = await this.agentRepository.findByEmail(email);
 
@@ -39,8 +41,11 @@ export class CreateAgentUseCase {
 
 		await this.contactRepository.create(contact);
 
+		const hashedPassword = await hash(password, 8);
+
 		const agent = Agent.create({
 			name,
+			password: hashedPassword,
 			contactId: contact.id,
 			companyId,
 			propertiesIds

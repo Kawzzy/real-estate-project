@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import { Address } from '@/entities/address';
 import { Company } from '@/entities/company';
 import { Contact } from '@/entities/contact';
@@ -11,6 +12,7 @@ import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error
 
 interface CreateCompanyUseCaseRequest {
     name: string
+	password: string
 	telephone?: string
 	cellphone: string
 	email: string
@@ -27,7 +29,7 @@ export class CreateCompanyUseCase {
 
 	constructor(private companyRepository: CompanyRepository, private contactRepository: ContactRepository, private addressRepository: AddressRepository) {}
 
-	async handle({ name, telephone, cellphone, email, zipCodeInfo, addressNumber, addressComplement, agentsIds, propertiesIds }: CreateCompanyUseCaseRequest): Promise<CreateCompanyUseCaseResponse> {
+	async handle({ name, password, telephone, cellphone, email, zipCodeInfo, addressNumber, addressComplement, agentsIds, propertiesIds }: CreateCompanyUseCaseRequest): Promise<CreateCompanyUseCaseResponse> {
         
 		let existingCompany: Company;
 		
@@ -59,8 +61,11 @@ export class CreateCompanyUseCase {
 
 		await this.contactRepository.create(contact);
 
+		const hashedPassword = await hash(password, 8);
+
 		const company = Company.create({
 			name,
+			password: hashedPassword,
 			agentsIds: agentsIds,
 			propertiesIds: propertiesIds,
 			contactId: contact.id,

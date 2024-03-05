@@ -4,6 +4,7 @@ import { Optional } from '@/utils/optional';
 export interface IOwnerProps {
     cod?: number
     name: string
+	password: string
     contactId: string
     propertiesIds: string[]
 	createdAt: Date
@@ -24,6 +25,10 @@ export class Owner extends Entity<IOwnerProps> {
     
 	get name(): string {
 		return this.props.name;
+	}
+    
+	get password(): string {
+		return this.props.password;
 	}
     
 	get contactId(): string {

@@ -9,10 +9,11 @@ export class CreateAgentController {
 
     @Post()
 	async handle(@Body() body: CreateUserBodySchema, @Param('companyId') companyId: string) {
-		const { name, telephone, cellphone, email } = createUserBodySchema.parse(body);
+		const { name, telephone, cellphone, email, password } = createUserBodySchema.parse(body);
         
 		const result = await this.createUser.handle({
 			name,
+			password,
 			telephone,
 			cellphone,
 			email,
