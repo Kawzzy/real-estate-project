@@ -5,7 +5,7 @@ import { AppModule } from '@/app.module';
 import { INestApplication } from '@nestjs/common';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
-describe('Create account - Agent (E2E)', () => {
+describe('Create account - Company (E2E)', () => {
 	let app: INestApplication;
 	let prismaConnection: PrismaService;
 
@@ -21,21 +21,25 @@ describe('Create account - Agent (E2E)', () => {
 		await app.init();
 	});
 
-	test('[POST] /accounts/:companyId/agent', async () => {
-		const email = 'usere2e@test.com';
-		
+	test('[POST] /accounts/company', async () => {
+		const email = 'alles@imoveis.com';
+        
 		const response = await request(app.getHttpServer())
-			.post('/accounts/1/agent')
+			.post('/accounts/company')
 			.send({
-				name: 'Agent (E2E)',
-				cellphone: '(47) 992-254-980',
+				name: 'Alles Imóveis',
+				telephone: '(47) 3390-3242',
+				cellphone: '(47) 992-654-563',
 				email,
-				password: '12348765'
+				zipCode: '89040-100',
+				addressNumber: '142',
+				addressComplement: 'Sala 23',
+				password: '23842382'
 			});
         
 		expect(response.statusCode).toBe(201);
 
-		const userOnDatabase = await prismaConnection.user.findFirst({
+		const companyOnDatabase = await prismaConnection.company.findFirst({
 			where: {
 				contact: {
 					email
@@ -43,6 +47,6 @@ describe('Create account - Agent (E2E)', () => {
 			}
 		});
 
-		expect(userOnDatabase).toBeTruthy();
+		expect(companyOnDatabase).toBeTruthy();
 	});
 });

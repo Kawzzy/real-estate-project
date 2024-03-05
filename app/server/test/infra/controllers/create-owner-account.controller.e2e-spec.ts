@@ -1,6 +1,5 @@
 import request from 'supertest';
 
-import { hash } from 'bcryptjs';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '@/app.module';
 import { INestApplication } from '@nestjs/common';
@@ -24,16 +23,14 @@ describe('Create account - Owner (E2E)', () => {
 
 	test('[POST] /accounts/owner', async () => {
 		const email = 'usere2e@test.com';
-		const password = '12348765';
-		const hashedPassword = await hash(password, 8);
-
+		
 		const response = await request(app.getHttpServer())
 			.post('/accounts/owner')
 			.send({
 				name: 'Owner (E2E)',
 				cellphone: '(47) 992-254-980',
 				email,
-				password: hashedPassword
+				password: '12348765'
 			});
         
 		expect(response.statusCode).toBe(201);
