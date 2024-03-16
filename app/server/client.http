@@ -18,10 +18,10 @@ POST {{baseUrl}}/accounts/1/agent
 Content-Type: application/json
 
 {
-	"name": "User test - agent",
+	"name": "User test - Authentication",
 	"cellphone": "(47) 992-654-563",
-	"email": "agent@test.com",
-	"password": "12345678"
+	"email": "userauth@test.com",
+	"password": "userauth123"
 }
 
 ###
@@ -39,4 +39,26 @@ Content-Type: application/json
 	"addressNumber": "142",
 	"addressComplement": "Sala 23",
 	"password": "23842382"
+}
+
+###
+
+# @name agentAuthenticate
+POST {{baseUrl}}/agent/auth
+Content-Type: application/json
+
+{
+	"email": "userauth@test.com",
+	"password": "userauth123"
+}
+
+###
+
+# @name ownerAuthenticate
+POST {{baseUrl}}/owner/auth
+Content-Type: application/json
+
+{
+	"email": "userauth@test.com",
+	"password": "userauth123"
 }

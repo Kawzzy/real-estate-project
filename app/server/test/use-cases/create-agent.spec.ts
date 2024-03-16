@@ -1,8 +1,8 @@
-import { hash } from 'bcryptjs';
 import { Agent } from '@/entities/agent';
 import { Contact } from '@/entities/contact';
 import { describe, beforeEach, it, expect } from 'vitest';
 import { CreateAgentUseCase } from '@/use-cases/create-agent';
+import { FakeHasher } from 'test/infra/cryptography/fake-hasher';
 import { EmailAlreadyExistsError } from '@/errors/email-already-exists-error';
 import { InMemoryAgentRepository } from 'test/repositories/in-memory-agent-repository';
 import { InMemoryContactRepository } from 'test/repositories/in-memory-contact-repository';
@@ -10,13 +10,15 @@ import { InMemoryContactRepository } from 'test/repositories/in-memory-contact-r
 let sut: CreateAgentUseCase;
 let inMemoryContactRepository: InMemoryContactRepository;
 let inMemoryAgentRepository: InMemoryAgentRepository;
+let fakeHasher: FakeHasher;
 
 describe('Create Agent', () => {
 
 	beforeEach(() => {
 		inMemoryContactRepository = new InMemoryContactRepository();
 		inMemoryAgentRepository = new InMemoryAgentRepository(inMemoryContactRepository);
-		sut = new CreateAgentUseCase(inMemoryContactRepository, inMemoryAgentRepository);
+		fakeHasher = new FakeHasher();
+		sut = new CreateAgentUseCase(inMemoryContactRepository, inMemoryAgentRepository, fakeHasher);
 	});
 
 	it('should create an Agent', async () => {
@@ -25,11 +27,10 @@ describe('Create Agent', () => {
 		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
 		const password = '87654321';
-		const hashedPassword = await hash(password, 8);
         
 		const result = await sut.handle({
 			name: agentName,
-			password: hashedPassword,
+			password,
 			cellphone: agentCellphone,
 			email: agentEmail,
 			companyId: '1',
@@ -39,6 +40,8 @@ describe('Create Agent', () => {
 		expect(inMemoryContactRepository.contacts).toHaveLength(1);
 
 		const contactId = inMemoryContactRepository.contacts[0].id;
+
+		const hashedPassword = await fakeHasher.hash(password);
 
 		expect(result.isRight()).toBe(true);
 		expect(result.value).toEqual(
@@ -50,6 +53,7 @@ describe('Create Agent', () => {
 		);
 		expect(inMemoryAgentRepository.agents).toHaveLength(1);
 		expect(inMemoryAgentRepository.agents[0].name).toEqual(agentName);
+		expect(inMemoryAgentRepository.agents[0].password).toEqual(hashedPassword);
 	});
 
 	it('shouldn\'t create an Agent with same email', async () => {
@@ -57,7 +61,6 @@ describe('Create Agent', () => {
 		const agentCellphone = '47 992-145-543';
 		const agentEmail = 'agent@test.com';
 		const password = '12345678';
-		const hashedPassword = await hash(password, 8);
         
 		const contact = Contact.create({
 			cellphone: agentCellphone,
@@ -68,7 +71,7 @@ describe('Create Agent', () => {
 
 		inMemoryAgentRepository.agents.push(Agent.create({
 			name: 'Mr. Dre',
-			password: hashedPassword,
+			password,
 			contactId: contact.id,
 			companyId: '1',
 			propertiesIds: []
@@ -76,7 +79,7 @@ describe('Create Agent', () => {
 
 		const result = await sut.handle({
 			name: 'John Doe',
-			password: hashedPassword,
+			password,
 			cellphone: agentCellphone,
 			email: agentEmail,
 			companyId: '1',

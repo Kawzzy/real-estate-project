@@ -1,7 +1,7 @@
-import { hash } from 'bcryptjs';
 import { Owner } from '@/entities/owner';
 import { Contact } from '@/entities/contact';
 import { Either, left, right } from '@/utils/either';
+import { HashGenerator } from '@/cryptography/hash-generator';
 import { OwnerRepository } from '@/repositories/owner-repository';
 import { ContactRepository } from '@/repositories/contact-repository';
 import { EmailAlreadyExistsError } from '@/errors/email-already-exists-error';
@@ -19,10 +19,7 @@ type CreateOwnerUseCaseResponse = Either<EmailAlreadyExistsError, { owner: Owner
 
 export class CreateOwnerUseCase {
 
-	constructor(
-		private contactRepository: ContactRepository,
-		private ownerRepository: OwnerRepository
-	) {}
+	constructor(private contactRepository: ContactRepository, private ownerRepository: OwnerRepository, private hashGenerator: HashGenerator) {}
 
 	async handle({ name, telephone, cellphone, email, password, propertiesIds }: CreateOwnerUseCaseRequest): Promise<CreateOwnerUseCaseResponse> {
 
@@ -40,7 +37,7 @@ export class CreateOwnerUseCase {
 		
 		await this.contactRepository.create(contact);
 		
-		const hashedPassword = await hash(password, 8);
+		const hashedPassword = await this.hashGenerator.hash(password);
 		
 		const owner = Owner.create({
 			name,

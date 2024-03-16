@@ -1,8 +1,4 @@
 import { Owner } from '@/entities/owner';
+import { UserRepository } from './user-repository';
 
-export interface OwnerRepository {
-    
-    create(owner: Owner): Promise<void>
-
-    findByEmail(email: string): Promise<Owner | null>
-}
+export interface OwnerRepository extends UserRepository<Owner> {}

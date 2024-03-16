@@ -1,8 +1,4 @@
 import { Agent } from '@/entities/agent';
+import { UserRepository } from './user-repository';
 
-export interface AgentRepository {
-
-    create(agent: Agent): Promise<void>
-
-    findByEmail(email: string): Promise<Agent | null>
-}
+export interface AgentRepository extends UserRepository<Agent> {}

@@ -3,11 +3,9 @@ import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
-describe('Create account - Agent (E2E)', () => {
+describe('Authenticate Agent (E2E)', () => {
 	let app: INestApplication;
-	let prismaConnection: PrismaService;
 
 	beforeAll(async () => {
 		const moduleRef = await Test.createTestingModule({
@@ -16,33 +14,32 @@ describe('Create account - Agent (E2E)', () => {
 
 		app = moduleRef.createNestApplication();
 
-		prismaConnection = moduleRef.get(PrismaService);
-
 		await app.init();
 	});
 
-	test('[POST] /accounts/:companyId/agent', async () => {
+	test('[POST] /agent/auth', async () => {
 		const email = 'usere2e@test.com';
-		
-		const response = await request(app.getHttpServer())
+		const password = '12348765';
+
+		await request(app.getHttpServer())
 			.post('/accounts/1/agent')
 			.send({
 				name: 'Agent (E2E)',
 				cellphone: '(47) 992-254-980',
 				email,
-				password: '12348765'
+				password
 			});
-        
+            
+		const response = await request(app.getHttpServer())
+			.post('/agent/auth')
+			.send({
+				email,
+				password
+			});
+
 		expect(response.statusCode).toBe(201);
-
-		const userOnDatabase = await prismaConnection.user.findFirst({
-			where: {
-				contact: {
-					email
-				}
-			}
+		expect(response.body).toEqual({
+			access_token: expect.any(String)
 		});
-
-		expect(userOnDatabase).toBeTruthy();
 	});
 });

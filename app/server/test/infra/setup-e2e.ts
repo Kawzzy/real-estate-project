@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 import { randomUUID } from 'node:crypto';
-import { envSchema } from '@/infra/env/env';
+import { envSchema } from '@/infra/env/sources/env';
 import { execSync } from 'node:child_process';
 import { PrismaClient } from '@prisma/client';
 
