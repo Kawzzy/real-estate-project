@@ -17,12 +17,14 @@ import { CryptographyModule } from '../cryptography/cryptography.module';
 import { AuthenticateAgentUseCase } from '@/use-cases/authenticate-agent';
 import { AuthenticateOwnerUseCase } from '@/use-cases/authenticate-owner';
 import { CreateZipCodeInfoUseCase } from '@/use-cases/create-zipcode-info';
+import { AuthenticateCompanyUseCase } from '@/use-cases/authenticate-company';
 import { ZipCodeInfoRepository } from '@/repositories/zipcode-info-repository';
 import { CreateOwnerController } from './controllers/create-owner-account.controller';
 import { CreateAgentController } from './controllers/create-agent-account.controller';
 import { AuthenticateAgentController } from './controllers/authenticate-agent.controller';
 import { AuthenticateOwnerController } from './controllers/authenticate-owner.controller';
 import { CreateCompanyController } from './controllers/create-company-account.controller';
+import { AuthenticateCompanyController } from './controllers/authenticate-company.controller';
 import { CreateZipCodeInfoInterceptor } from './interceptors/create-zip-code-info-interceptor';
 import { PrismaOwnerRepository } from '../database/prisma/repositories/prisma-owner-repository';
 import { PrismaAgentRepository } from '../database/prisma/repositories/prisma-agent-repository';
@@ -41,7 +43,8 @@ import { PrismaZipCodeInfoRepository } from '../database/prisma/repositories/pri
 		CreateAgentController,
 		CreateCompanyController,
 		AuthenticateAgentController,
-		AuthenticateOwnerController
+		AuthenticateOwnerController,
+		AuthenticateCompanyController
 	],
 	providers: [
 		CreateZipCodeInfoInterceptor,
@@ -59,10 +62,10 @@ import { PrismaZipCodeInfoRepository } from '../database/prisma/repositories/pri
 			inject: [PrismaContactRepository, PrismaOwnerRepository, BcryptHasher]
 		}, {
 			provide: CreateCompanyUseCase,
-			useFactory: (companyRepository: CompanyRepository, contactRepository: ContactRepository, addressRepository: AddressRepository) => {
-				return new CreateCompanyUseCase(companyRepository, contactRepository, addressRepository);
+			useFactory: (companyRepository: CompanyRepository, contactRepository: ContactRepository, addressRepository: AddressRepository, hashGenerator: HashGenerator) => {
+				return new CreateCompanyUseCase(companyRepository, contactRepository, addressRepository, hashGenerator);
 			},
-			inject: [PrismaCompanyRepository, PrismaContactRepository, PrismaAddressRepository]
+			inject: [PrismaCompanyRepository, PrismaContactRepository, PrismaAddressRepository, BcryptHasher]
 		}, {
 			provide: CreateZipCodeInfoUseCase,
 			useFactory: (zipCodeInfoRepository: ZipCodeInfoRepository) => {
@@ -81,6 +84,12 @@ import { PrismaZipCodeInfoRepository } from '../database/prisma/repositories/pri
 				return new AuthenticateOwnerUseCase(ownerRepository, hashComparer, encryper);
 			},
 			inject: [PrismaOwnerRepository, BcryptHasher, JwtEncrypter]
+		}, {
+			provide: AuthenticateCompanyUseCase,
+			useFactory: (companyRepository: CompanyRepository, hashComparer: HashComparer, encryper: Encrypter) => {
+				return new AuthenticateCompanyUseCase(companyRepository, hashComparer, encryper);
+			},
+			inject: [PrismaCompanyRepository, BcryptHasher, JwtEncrypter]
 		}
 	]
 })

@@ -1,9 +1,9 @@
-import { hash } from 'bcryptjs';
 import { Address } from '@/entities/address';
 import { Company } from '@/entities/company';
 import { Contact } from '@/entities/contact';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { FakeHasher } from 'test/infra/cryptography/fake-hasher';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
 import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error';
 import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
@@ -14,6 +14,7 @@ let sut: CreateCompanyUseCase;
 let inMemoryContactRepository: InMemoryContactRepository;
 let inMemoryAddressRepository: InMemoryAddressRepository;
 let inMemoryCompanyRepository: InMemoryCompanyRepository;
+let fakeHasher: FakeHasher;
 
 describe('Create Company', () => {
     
@@ -21,14 +22,14 @@ describe('Create Company', () => {
 		inMemoryContactRepository = new InMemoryContactRepository();
 		inMemoryAddressRepository = new InMemoryAddressRepository();
 		inMemoryCompanyRepository = new InMemoryCompanyRepository(inMemoryContactRepository);
-		sut = new CreateCompanyUseCase(inMemoryCompanyRepository, inMemoryContactRepository, inMemoryAddressRepository);
+		fakeHasher = new FakeHasher();
+		sut = new CreateCompanyUseCase(inMemoryCompanyRepository, inMemoryContactRepository, inMemoryAddressRepository, fakeHasher);
 	});
 
 	it('should create a Company', async () => {
 
 		const companyName = 'Alles Imobiliária';
 		const password = '12345678';
-		const hashedPassword = await hash(password, 8);
         
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -40,7 +41,7 @@ describe('Create Company', () => {
 
 		const result = await sut.handle({
 			name: companyName,
-			password: hashedPassword,
+			password,
 			telephone: '47 3390-3242',
 			cellphone: '47 992-145-543',
 			email: 'alles@imobtest.com',
@@ -72,7 +73,6 @@ describe('Create Company', () => {
 		const cellphone = '47 992-145-543';
 		const email = 'alles@imobtest.com';
 		const password = '12345678';
-		const hashedPassword = await hash(password, 8);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode,
@@ -96,7 +96,7 @@ describe('Create Company', () => {
         
 		inMemoryCompanyRepository.companies.push(Company.create({
 			name: companyName,
-			password: hashedPassword,
+			password: await fakeHasher.hash(password),
 			addressId: address.id,
 			contactId: contact.id,
 			agentsIds: [],
@@ -105,7 +105,7 @@ describe('Create Company', () => {
         
 		const result = await sut.handle({
 			name: companyName,
-			password: hashedPassword,
+			password,
 			telephone,
 			cellphone,
 			email,

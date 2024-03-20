@@ -1,9 +1,9 @@
-import { hash } from 'bcryptjs';
 import { Address } from '@/entities/address';
 import { Company } from '@/entities/company';
 import { Contact } from '@/entities/contact';
 import { Either, left, right } from '@/utils/either';
 import { ZipCodeInfo } from '@/entities/zipCodeInfo';
+import { HashGenerator } from '@/cryptography/hash-generator';
 import { AddressRepository } from '@/repositories/address-repository';
 import { CompanyRepository } from '@/repositories/company-repository';
 import { ContactRepository } from '@/repositories/contact-repository';
@@ -27,7 +27,7 @@ type CreateCompanyUseCaseResponse  = Either<CompanyAlreadyExistsError, { company
 
 export class CreateCompanyUseCase {
 
-	constructor(private companyRepository: CompanyRepository, private contactRepository: ContactRepository, private addressRepository: AddressRepository) {}
+	constructor(private companyRepository: CompanyRepository, private contactRepository: ContactRepository, private addressRepository: AddressRepository, private hashGenerator: HashGenerator) {}
 
 	async handle({ name, password, telephone, cellphone, email, zipCodeInfo, addressNumber, addressComplement, agentsIds, propertiesIds }: CreateCompanyUseCaseRequest): Promise<CreateCompanyUseCaseResponse> {
         
@@ -61,7 +61,7 @@ export class CreateCompanyUseCase {
 
 		await this.contactRepository.create(contact);
 
-		const hashedPassword = await hash(password, 8);
+		const hashedPassword = await this.hashGenerator.hash(password);
 
 		const company = Company.create({
 			name,

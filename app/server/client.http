@@ -62,3 +62,14 @@ Content-Type: application/json
 	"email": "userauth@test.com",
 	"password": "userauth123"
 }
+
+###
+
+# @name companyAuthenticate
+POST {{baseUrl}}/company/auth
+Content-Type: application/json
+
+{
+	"email": "alles@imoveis.com",
+	"password": "23842382"
+}
