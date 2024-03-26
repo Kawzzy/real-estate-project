@@ -5,14 +5,15 @@ import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { CreateApartmentUseCase } from '@/use-cases/create-apartment';
 import { InMemoryApartmentRepository } from 'test/repositories/in-memory-apartment-repository';
-
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 
 describe('Create Apartment', () => {
     
 	it('should create a Apartment', async () => {
         
 		const inMemoryApartmentRepository: InMemoryApartmentRepository = new InMemoryApartmentRepository();
-		const sut: CreateApartmentUseCase = new CreateApartmentUseCase(inMemoryApartmentRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateApartmentUseCase = new CreateApartmentUseCase(inMemoryApartmentRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -29,7 +30,9 @@ describe('Create Apartment', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			addressNumber: address.number,
+			addressComplement: address.complement,
+			zipCodeInfo: zipCodeInfo,
 			amenities: 5,
 			areaSize: 45,
 			builtYear: 2023,

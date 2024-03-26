@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ZipCodeInfo } from '@/entities/zipCodeInfo';
+import { IRequestBody } from '@/utils/request-utils';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
 import { EmailAlreadyExistsError } from '@/errors/email-already-exists-error';
 import { CompanyAlreadyExistsError } from '@/errors/company-already-exists-error';
@@ -27,10 +27,6 @@ const createCompanyBodySchema = z.object({
 });
 
 type CreateCompanyBodySchema = z.infer<typeof createCompanyBodySchema>
-
-interface IRequestBody {
-	zipCodeInfo: ZipCodeInfo
-}
 
 @Controller('/accounts/company')
 @UseInterceptors(CreateZipCodeInfoInterceptor)

@@ -5,6 +5,7 @@ import { PrismaAgentRepository } from './prisma/repositories/prisma-agent-reposi
 import { PrismaContactRepository } from './prisma/repositories/prisma-contact-repository';
 import { PrismaCompanyRepository } from './prisma/repositories/prisma-company-repository';
 import { PrismaAddressRepository } from './prisma/repositories/prisma-address-repository';
+import { PrismaApartmentRepository } from './prisma/repositories/prisma-property-repository';
 import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-code-info-repository';
 
 @Module({
@@ -15,6 +16,7 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaAddressRepository,
 		PrismaContactRepository,
 		PrismaCompanyRepository,
+		PrismaApartmentRepository,
 		PrismaZipCodeInfoRepository
 	],
 	exports: [
@@ -24,6 +26,7 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaAddressRepository,
 		PrismaContactRepository,
 		PrismaCompanyRepository,
+		PrismaApartmentRepository,
 		PrismaZipCodeInfoRepository
 	]
 })

@@ -34,6 +34,7 @@ export abstract class Property<Props extends IPropertyProps> extends Entity<IPro
 	get description(): string {
 		return this.props.description;
 	}
+	
 	get status(): PropertyStatus {
 		return this.props.status;
 	}

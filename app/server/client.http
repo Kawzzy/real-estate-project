@@ -73,3 +73,43 @@ Content-Type: application/json
 	"email": "alles@imoveis.com",
 	"password": "23842382"
 }
+
+###
+
+# @name createApartment
+POST {{baseUrl}}/create-apartment
+Content-Type: application/json
+
+{
+	"zipCode": "89040-100",
+	"addressNumber": "142",
+	"addressComplement": "Sala 23",
+	"amenities": "4",
+	"areaSize": "50",
+	"builtYear": "2020",
+	"description": "Cozy apartment for a young couple",
+	"imagesIds": [],
+	"ownerId": "fcc2d663-2741-46ff-96c9-4695e0a1b8e1",
+	"price": "1800",
+	"sponsorId": "fcc2d663-2741-46ff-96c9-4695e0a1b8e1",
+	"status": "FOR_RENT",
+	"airConditioner": "1",
+	"balcony": "1",
+	"bathrooms": "2",
+	"bedrooms": "2",
+	"condominium": "Dove home",
+	"condominiumTax": "200",
+	"dinnerRoom": "1",
+	"elevator": "1",
+	"floors": "1",
+	"furniture": true,
+	"garage": "2",
+	"gym": true,
+	"heat": "1",
+	"kitchen": "1",
+	"laundry": "1",
+	"livingRoom": "1",
+	"playground": false,
+	"pool": "1",
+	"socialSpace": true
+}

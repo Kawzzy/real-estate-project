@@ -23,7 +23,7 @@ interface CreateCompanyUseCaseRequest {
     propertiesIds?: string[]
 }
 
-type CreateCompanyUseCaseResponse  = Either<CompanyAlreadyExistsError, { company: Company }>
+type CreateCompanyUseCaseResponse = Either<CompanyAlreadyExistsError, { company: Company }>
 
 export class CreateCompanyUseCase {
 
