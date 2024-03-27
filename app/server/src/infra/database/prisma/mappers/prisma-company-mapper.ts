@@ -24,6 +24,6 @@ export class PrismaCompanyMapper {
 			createdAt: raw.createdAt,
 			agentsIds: [],
 			propertiesIds: []
-		});
+		}, raw.id);
 	}
 }

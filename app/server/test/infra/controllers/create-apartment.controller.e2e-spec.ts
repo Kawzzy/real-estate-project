@@ -1,8 +1,7 @@
 import request from 'supertest';
 
 import { Test } from '@nestjs/testing';
-import { Owner } from '@/entities/owner';
-import { Contact } from '@/entities/contact';
+import { JwtService } from '@nestjs/jwt';
 import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
@@ -10,6 +9,7 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service';
 describe('Create apartment (E2E)', () => {
 	let app: INestApplication;
 	let prismaConnection: PrismaService;
+	let jwt: JwtService;
 
 	beforeAll(async () => {
 		const moduleRef = await Test.createTestingModule({
@@ -19,55 +19,33 @@ describe('Create apartment (E2E)', () => {
 		app = moduleRef.createNestApplication();
 
 		prismaConnection = moduleRef.get(PrismaService);
+		jwt = moduleRef.get(JwtService);
 
 		await app.init();
 	});
 
 	test('[POST] /create-apartment', async () => {
-		
-		const contactTest = Contact.create({
-			cellphone: '(47) 992-254-980',
-			email: 'usere2e@test.com',
-		});
 
-		await prismaConnection.contact.create({
+		const contact = await prismaConnection.contact.create({
 			data: {
-				cellphone: contactTest.cellphone,
-				email: contactTest.email
-			}
-		});
-
-		const contactOnDB = await prismaConnection.contact.findUnique({
-			where: {
+				cellphone: '(47) 992-254-980',
 				email: 'usere2e@test.com'
 			}
 		});
 
-		const ownerTest = Owner.create({
-			name: 'Owner (E2E)',
-			password: '12348765',
-			contactId: contactOnDB.id,
-			propertiesIds: [],
-		});
-
-		await prismaConnection.user.create({
+		const owner = await prismaConnection.user.create({
 			data: {
-				name: ownerTest.name,
-				password: ownerTest.name,
-				contactId: ownerTest.contactId,
+				name: 'Owner (E2E)',
+				password: '12348765',
+				contactId: contact.id,
 			}
 		});
 
-		const ownerOnDB = await prismaConnection.user.findFirst({
-			where: {
-				contact: {
-					email: 'usere2e@test.com'
-				}
-			}
-		});
+		const accessToken = jwt.sign({ sub: owner.id });
 
 		const response = await request(app.getHttpServer())
 			.post('/create-apartment')
+			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				zipCode: '89120-000',
 				addressNumber: '12',
@@ -77,9 +55,8 @@ describe('Create apartment (E2E)', () => {
 				builtYear: 2020,
 				description: 'Cozy apartment for a young couple',
 				imagesIds: [],
-				ownerId: ownerOnDB.id,
 				price: 1800,
-				sponsorId: ownerOnDB.id,
+				sponsorId: owner.id,
 				status: 'FOR_RENT',
 				airConditioner: 1,
 				balcony: 1,

@@ -22,6 +22,6 @@ export class PrismaAgentMapper {
 			contactId: raw.contactId,
 			createdAt: raw.createdAt,
 			propertiesIds: []
-		});
+		}, raw.id);
 	}
 }

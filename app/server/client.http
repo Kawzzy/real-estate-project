@@ -1,13 +1,15 @@
 @baseUrl = http://localhost:3333
 
+@ownerAuthToken = {{ownerAuthenticate.response.body.access_token}}
+
 # @name createOwnerAccount
 POST {{baseUrl}}/accounts/owner
 Content-Type: application/json
 
 {
-	"name": "User test - Owner",
+	"name": "OWWWWNER",
 	"cellphone": "(47) 992-254-980",
-	"email": "user@test.com",
+	"email": "ownerwithsameid@test.com",
 	"password": "12344321"
 }
 
@@ -59,8 +61,8 @@ POST {{baseUrl}}/owner/auth
 Content-Type: application/json
 
 {
-	"email": "userauth@test.com",
-	"password": "userauth123"
+	"email": "ownerwithsameid@test.com",
+	"password": "12344321"
 }
 
 ###
@@ -79,6 +81,7 @@ Content-Type: application/json
 # @name createApartment
 POST {{baseUrl}}/create-apartment
 Content-Type: application/json
+Authorization: Bearer {{ownerAuthToken}}
 
 {
 	"zipCode": "89040-100",
@@ -89,9 +92,8 @@ Content-Type: application/json
 	"builtYear": "2020",
 	"description": "Cozy apartment for a young couple",
 	"imagesIds": [],
-	"ownerId": "fcc2d663-2741-46ff-96c9-4695e0a1b8e1",
 	"price": "1800",
-	"sponsorId": "fcc2d663-2741-46ff-96c9-4695e0a1b8e1",
+	"sponsorId": "76964f51-f9a8-459a-ace5-41891da4a10e",
 	"status": "FOR_RENT",
 	"airConditioner": "1",
 	"balcony": "1",

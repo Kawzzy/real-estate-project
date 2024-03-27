@@ -21,6 +21,6 @@ export class PrismaOwnerMapper {
 			contactId: raw.contactId,
 			createdAt: raw.createdAt,
 			propertiesIds: []
-		});
+		}, raw.id);
 	}
 }
