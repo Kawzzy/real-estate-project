@@ -5,13 +5,15 @@ import { CreateLoftUseCase } from '@/use-cases/create-loft';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { InMemoryLoftRepository } from 'test/repositories/in-memory-loft-repository';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 
 describe('Create Loft', () => {
     
 	it('should create a Loft', async () => {
         
 		const inMemoryLoftRepository: InMemoryLoftRepository = new InMemoryLoftRepository();
-		const sut: CreateLoftUseCase = new CreateLoftUseCase(inMemoryLoftRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateLoftUseCase = new CreateLoftUseCase(inMemoryLoftRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -28,7 +30,9 @@ describe('Create Loft', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			addressComplement: address.complement,
+			addressNumber: address.number,
+			zipCodeInfo: zipCodeInfo,
 			amenities: 5,
 			areaSize: 45,
 			builtYear: 2023,

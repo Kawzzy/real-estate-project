@@ -34,7 +34,6 @@ export class PrismaApartmentMapper {
 			pool: apartment.pool,
 			socialSpace: apartment.socialSpace,
 			residentialType: apartment.type,
-
 		};
 	}
 }
