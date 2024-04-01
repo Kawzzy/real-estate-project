@@ -6,7 +6,7 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
-describe('Create loft (E2E)', () => {
+describe('Create studio (E2E)', () => {
 	let app: INestApplication;
 	let prismaConnection: PrismaService;
 	let jwt: JwtService;
@@ -24,7 +24,7 @@ describe('Create loft (E2E)', () => {
 		await app.init();
 	});
 
-	test('[POST] /create-loft', async () => {
+	test('[POST] /create-studio', async () => {
 
 		const contact = await prismaConnection.contact.create({
 			data: {
@@ -44,16 +44,16 @@ describe('Create loft (E2E)', () => {
 		const accessToken = jwt.sign({ sub: owner.id });
 
 		const response = await request(app.getHttpServer())
-			.post('/create-loft')
+			.post('/create-studio')
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				zipCode: '89120-000',
 				addressComplement: '',
-				addressNumber: '192',
+				addressNumber: '2423',
 				amenities: 3,
 				areaSize: 45,
-				builtYear: 2023,
-				description: 'Small loft',
+				builtYear: 2022,
+				description: 'Tiny studio',
 				imagesIds: [],
 				price: 2000,
 				sponsorId: owner.id,
@@ -62,7 +62,7 @@ describe('Create loft (E2E)', () => {
 				balcony: 0,
 				bathrooms: 1,
 				bedrooms: 1,
-				condominium: 'Loft paradise',
+				condominium: 'Studio\'s point',
 				condominiumTax: 800,
 				dinnerRoom: 0,
 				elevator: 2,
@@ -81,12 +81,12 @@ describe('Create loft (E2E)', () => {
         
 		expect(response.statusCode).toBe(201);
 
-		const loftOnDatabase = prismaConnection.property.findFirst({
+		const studioOnDatabase = prismaConnection.property.findFirst({
 			where: {
-				residentialType: 'LOFT'
+				residentialType: 'STUDIO'
 			}
 		});
 
-		expect(loftOnDatabase).toBeTruthy();
+		expect(studioOnDatabase).toBeTruthy();
 	});
 });

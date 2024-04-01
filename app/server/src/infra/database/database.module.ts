@@ -3,6 +3,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { PrismaLoftRepository } from './prisma/repositories/prisma-loft-repository';
 import { PrismaOwnerRepository } from './prisma/repositories/prisma-owner-repository';
 import { PrismaAgentRepository } from './prisma/repositories/prisma-agent-repository';
+import { PrismaStudioRepository } from './prisma/repositories/prisma-studio-repository';
 import { PrismaContactRepository } from './prisma/repositories/prisma-contact-repository';
 import { PrismaCompanyRepository } from './prisma/repositories/prisma-company-repository';
 import { PrismaAddressRepository } from './prisma/repositories/prisma-address-repository';
@@ -15,6 +16,7 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaLoftRepository,
 		PrismaOwnerRepository,
 		PrismaAgentRepository,
+		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,
 		PrismaCompanyRepository,
@@ -26,6 +28,7 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaLoftRepository,
 		PrismaOwnerRepository,
 		PrismaAgentRepository,
+		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,
 		PrismaCompanyRepository,

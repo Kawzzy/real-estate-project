@@ -156,3 +156,43 @@ Authorization: Bearer {{ownerAuthToken}}
 	"pool": "1",
 	"socialSpace": true
 }
+
+###
+
+# @name createStudio
+POST {{baseUrl}}/create-studio
+Content-Type: application/json
+Authorization: Bearer {{ownerAuthToken}}
+
+{
+	"zipCode": "89120-000",
+	"addressComplement": "",
+	"addressNumber": "2423",
+	"amenities": "3",
+	"areaSize": "45",
+	"builtYear": "2022",
+	"description": "Tiny studio",
+	"imagesIds": [],
+	"price": "2000",
+	"sponsorId": "76964f51-f9a8-459a-ace5-41891da4a10e",
+	"status": "FOR_RENT",
+	"airConditioner": "1",
+	"balcony": "0",
+	"bathrooms": "1",
+	"bedrooms": "1",
+	"condominium": "Studio's point",
+	"condominiumTax": 80"0",
+	"dinnerRoom": "0",
+	"elevator": "2",
+	"floors": "1",
+	"furniture": true,
+	"garage": "1",
+	"gym": true,
+	"heat": "1",
+	"kitchen": "1",
+	"laundry": "1",
+	"livingRoom": "1",
+	"playground": false,
+	"pool": "1",
+	"socialSpace": true
+}

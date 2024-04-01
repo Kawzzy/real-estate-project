@@ -5,13 +5,15 @@ import { CreateStudioUseCase } from '@/use-cases/create-studio';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { InMemoryStudioRepository } from 'test/repositories/in-memory-studio-repository';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 
 describe('Create Studio', () => {
     
 	it('should create a Studio', async () => {
         
 		const inMemoryStudioRepository: InMemoryStudioRepository = new InMemoryStudioRepository();
-		const sut: CreateStudioUseCase = new CreateStudioUseCase(inMemoryStudioRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateStudioUseCase = new CreateStudioUseCase(inMemoryStudioRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -28,7 +30,9 @@ describe('Create Studio', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			zipCodeInfo: zipCodeInfo,
+			addressComplement: address.complement,
+			addressNumber: address.number,
 			amenities: 5,
 			areaSize: 45,
 			builtYear: 2023,
