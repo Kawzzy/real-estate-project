@@ -181,7 +181,7 @@ Authorization: Bearer {{ownerAuthToken}}
 	"bathrooms": "1",
 	"bedrooms": "1",
 	"condominium": "Studio's point",
-	"condominiumTax": 80"0",
+	"condominiumTax": "800",
 	"dinnerRoom": "0",
 	"elevator": "2",
 	"floors": "1",
@@ -195,4 +195,49 @@ Authorization: Bearer {{ownerAuthToken}}
 	"playground": false,
 	"pool": "1",
 	"socialSpace": true
+}
+
+###
+
+# @name createHouse
+POST {{baseUrl}}/create-house
+Content-Type: application/json
+Authorization: Bearer {{ownerAuthToken}}
+
+{
+	"zipCode": "89120-000",
+	"addressComplement": "Brodwood way",
+	"addressNumber": "938",
+	"amenities": "8",
+	"areaSize": "45",
+	"builtYear": "2022",
+	"description": "Nice house close to the lake",
+	"imagesIds": [],
+	"price": "2000",
+	"sponsorId": "76964f51-f9a8-459a-ace5-41891da4a10e",
+	"status": "FOR_BUY",
+	"airConditioner": "1",
+	"balcony": "0",
+	"bathrooms": "1",
+	"bedrooms": "1",
+	"condominium": "Decent house for a small family",
+	"condominiumTax": "800",
+	"dinnerRoom": "0",
+	"elevator": "2",
+	"floors": "2",
+	"furniture": true,
+	"garage": "1",
+	"gym": true,
+	"heat": "1",
+	"kitchen": "1",
+	"laundry": "1",
+	"livingRoom": "1",
+	"playground": false,
+	"pool": "1",
+	"socialSpace": true,
+	"deck": true,
+	"porch": false,
+	"backyard": true,
+	"driveWay": true,
+	"frontYard": true
 }

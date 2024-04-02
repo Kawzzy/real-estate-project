@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { PrismaLoftRepository } from './prisma/repositories/prisma-loft-repository';
-import { PrismaOwnerRepository } from './prisma/repositories/prisma-owner-repository';
 import { PrismaAgentRepository } from './prisma/repositories/prisma-agent-repository';
+import { PrismaHouseRepository } from './prisma/repositories/prisma-house-repository';
+import { PrismaOwnerRepository } from './prisma/repositories/prisma-owner-repository';
 import { PrismaStudioRepository } from './prisma/repositories/prisma-studio-repository';
 import { PrismaContactRepository } from './prisma/repositories/prisma-contact-repository';
 import { PrismaCompanyRepository } from './prisma/repositories/prisma-company-repository';
@@ -14,8 +15,9 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 	providers: [
 		PrismaService,
 		PrismaLoftRepository,
-		PrismaOwnerRepository,
 		PrismaAgentRepository,
+		PrismaHouseRepository,
+		PrismaOwnerRepository,
 		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,
@@ -26,8 +28,9 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 	exports: [
 		PrismaService,
 		PrismaLoftRepository,
-		PrismaOwnerRepository,
 		PrismaAgentRepository,
+		PrismaHouseRepository,
+		PrismaOwnerRepository,
 		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,

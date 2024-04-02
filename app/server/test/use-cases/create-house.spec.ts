@@ -5,13 +5,15 @@ import { CreateHouseUseCase } from '@/use-cases/create-house';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { InMemoryHouseRepository } from 'test/repositories/in-memory-house-repository';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 
 describe('Create House', () => {
     
 	it('should create a House', async () => {
         
 		const inMemoryHouseRepository: InMemoryHouseRepository = new InMemoryHouseRepository();
-		const sut: CreateHouseUseCase = new CreateHouseUseCase(inMemoryHouseRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateHouseUseCase = new CreateHouseUseCase(inMemoryHouseRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-160',
@@ -28,7 +30,9 @@ describe('Create House', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			zipCodeInfo,
+			addressComplement: address.complement,
+			addressNumber: address.number,
 			amenities: 8,
 			areaSize: 70,
 			builtYear: 2022,

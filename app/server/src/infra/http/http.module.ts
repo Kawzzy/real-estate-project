@@ -1,5 +1,6 @@
 import { Loft } from '@/entities/loft';
 import { Module } from '@nestjs/common';
+import { House } from '@/entities/house';
 import { Studio } from '@/entities/studio';
 import { Apartment } from '@/entities/apartment';
 import { Encrypter } from '@/cryptography/encrypter';
@@ -7,6 +8,7 @@ import { CreateLoftUseCase } from '@/use-cases/create-loft';
 import { HashComparer } from '@/cryptography/hash-comparer';
 import { DatabaseModule } from '../database/database.module';
 import { CreateAgentUseCase } from '@/use-cases/create-agent';
+import { CreateHouseUseCase } from '@/use-cases/create-house';
 import { CreateOwnerUseCase } from '@/use-cases/create-owner';
 import { HashGenerator } from '@/cryptography/hash-generator';
 import { CreateStudioUseCase } from '@/use-cases/create-studio';
@@ -26,6 +28,7 @@ import { AuthenticateOwnerUseCase } from '@/use-cases/authenticate-owner';
 import { CreateZipCodeInfoUseCase } from '@/use-cases/create-zipcode-info';
 import { CreateLoftController } from './controllers/create-loft.controller';
 import { AuthenticateCompanyUseCase } from '@/use-cases/authenticate-company';
+import { CreateHouseController } from './controllers/create-house.controller';
 import { ZipCodeInfoRepository } from '@/repositories/zipcode-info-repository';
 import { CreateStudioController } from './controllers/create-studio.controller';
 import { CreateAgentController } from './controllers/create-agent-account.controller';
@@ -37,8 +40,9 @@ import { CreateCompanyController } from './controllers/create-company-account.co
 import { AuthenticateCompanyController } from './controllers/authenticate-company.controller';
 import { PrismaLoftRepository } from '../database/prisma/repositories/prisma-loft-repository';
 import { CreateZipCodeInfoInterceptor } from './interceptors/create-zip-code-info-interceptor';
-import { PrismaOwnerRepository } from '../database/prisma/repositories/prisma-owner-repository';
 import { PrismaAgentRepository } from '../database/prisma/repositories/prisma-agent-repository';
+import { PrismaHouseRepository } from '../database/prisma/repositories/prisma-house-repository';
+import { PrismaOwnerRepository } from '../database/prisma/repositories/prisma-owner-repository';
 import { PrismaStudioRepository } from '../database/prisma/repositories/prisma-studio-repository';
 import { PrismaAddressRepository } from '../database/prisma/repositories/prisma-address-repository';
 import { PrismaCompanyRepository } from '../database/prisma/repositories/prisma-company-repository';
@@ -53,8 +57,9 @@ import { PrismaZipCodeInfoRepository } from '../database/prisma/repositories/pri
 	],
 	controllers: [
 		CreateLoftController,
-		CreateOwnerController,
 		CreateAgentController,
+		CreateHouseController,
+		CreateOwnerController,
 		CreateStudioController,
 		CreateCompanyController,
 		CreateApartmentController,
@@ -124,6 +129,12 @@ import { PrismaZipCodeInfoRepository } from '../database/prisma/repositories/pri
 				return new CreateStudioUseCase(propertyRepository, addressRepository);
 			},
 			inject: [PrismaStudioRepository, PrismaAddressRepository]
+		}, {
+			provide: CreateHouseUseCase,
+			useFactory: (propertyRepository: PropertyRepository<House>, addressRepository: AddressRepository) => {
+				return new CreateHouseUseCase(propertyRepository, addressRepository);
+			},
+			inject: [PrismaHouseRepository, PrismaAddressRepository]
 		}
 	]
 })
