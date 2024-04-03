@@ -4,6 +4,7 @@ import { PrismaLoftRepository } from './prisma/repositories/prisma-loft-reposito
 import { PrismaAgentRepository } from './prisma/repositories/prisma-agent-repository';
 import { PrismaHouseRepository } from './prisma/repositories/prisma-house-repository';
 import { PrismaOwnerRepository } from './prisma/repositories/prisma-owner-repository';
+import { PrismaHangarRepository } from './prisma/repositories/prisma-hangar-repository';
 import { PrismaStudioRepository } from './prisma/repositories/prisma-studio-repository';
 import { PrismaContactRepository } from './prisma/repositories/prisma-contact-repository';
 import { PrismaCompanyRepository } from './prisma/repositories/prisma-company-repository';
@@ -19,6 +20,7 @@ import { PrismaCommercialRoomRepository } from './prisma/repositories/prisma-com
 		PrismaAgentRepository,
 		PrismaHouseRepository,
 		PrismaOwnerRepository,
+		PrismaHangarRepository,
 		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,
@@ -33,6 +35,7 @@ import { PrismaCommercialRoomRepository } from './prisma/repositories/prisma-com
 		PrismaAgentRepository,
 		PrismaHouseRepository,
 		PrismaOwnerRepository,
+		PrismaHangarRepository,
 		PrismaStudioRepository,
 		PrismaAddressRepository,
 		PrismaContactRepository,

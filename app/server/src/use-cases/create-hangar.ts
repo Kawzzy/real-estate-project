@@ -4,36 +4,27 @@ import { Either, right } from '@/utils/either';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { PropertyRepository } from '@/repositories/property-repository';
-
-interface ICreateHangarUseCaseRequest {
-	address: Address
-    description: string
-	status: PropertyStatus
-	price: number
-	areaSize: number
-	floors?: number
-	builtYear: number
-	imagesIds: string[]
-	ownerId: string
-	sponsorId: string
-    office: boolean
-	securitySystem: boolean
-	internetAccess: boolean
-	restRoom: number
-    type: CommercialType
-    parkingLot: boolean
-}
+import { ZipCodeInfo } from '@/entities/zipCodeInfo';
+import { AddressRepository } from '@/repositories/address-repository';
 
 type ICreateHangarUseCaseResponse = Either<null, { hangar: Hangar }>
 
 export class CreateHangarUseCase {
 
-	constructor(private propertyRepository: PropertyRepository<Hangar>) {}
+	constructor(private propertyRepository: PropertyRepository<Hangar>, private addressRepository: AddressRepository) {}
 
-	async handle({ address, description, status, price, areaSize, floors, builtYear, imagesIds, 
-		ownerId, sponsorId, office, securitySystem, internetAccess, restRoom, type, parkingLot
+	async handle({ zipCodeInfo, addressComplement, addressNumber, description, status, price, areaSize, floors,
+		builtYear, imagesIds, ownerId, sponsorId, office, securitySystem, internetAccess, restRoom, type, parkingLot
 	}: ICreateHangarUseCaseRequest): Promise<ICreateHangarUseCaseResponse> {
 
+		const address = Address.create({
+			zipCode: zipCodeInfo.zipCode,
+			number: addressNumber,
+			complement: addressComplement
+		});
+
+		await this.addressRepository.create(address);
+		
 		const hangar = Hangar.create({
 			address,
 			areaSize,
@@ -57,4 +48,25 @@ export class CreateHangarUseCase {
 
 		return right({ hangar });
 	}
+}
+
+interface ICreateHangarUseCaseRequest {
+	zipCodeInfo: ZipCodeInfo
+	addressComplement: string
+	addressNumber: string
+    description: string
+	status: PropertyStatus.FOR_BUY | PropertyStatus.FOR_RENT
+	price: number
+	areaSize: number
+	floors?: number
+	builtYear: number
+	imagesIds: string[]
+	ownerId: string
+	sponsorId: string
+    office: boolean
+	securitySystem: boolean
+	internetAccess: boolean
+	restRoom: number
+    type: CommercialType.HANGAR
+    parkingLot: boolean
 }

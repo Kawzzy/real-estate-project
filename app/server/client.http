@@ -267,3 +267,29 @@ Authorization: Bearer {{ownerAuthToken}}
 	"floors": "1",
 	"status": "FOR_RENT"
 }
+
+###
+
+# @name createHangar
+POST {{baseUrl}}/create-hangar
+Content-Type: application/json
+Authorization: Bearer {{ownerAuthToken}}
+
+{
+	"zipCode": "89120-000",
+	"addressComplement": "Industrial area",
+	"addressNumber": "429",
+	"areaSize": "3500",
+	"builtYear": "2016",
+	"description": "Big hangar, perfect for your storage company",
+	"imagesIds": [],
+	"internetAccess": true,
+	"office": true,
+	"parkingLot": true,
+	"price": "1600.000",
+	"restRoom": "4",
+	"securitySystem": true,
+	"sponsorId": "76964f51-f9a8-459a-ace5-41891da4a10e",
+	"floors": "1",
+	"status": "FOR_BUY"
+}

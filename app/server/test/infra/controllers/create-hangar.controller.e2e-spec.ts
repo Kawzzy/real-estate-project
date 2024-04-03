@@ -6,7 +6,7 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
-describe('Create commercial room (E2E)', () => {
+describe('Create hangar (E2E)', () => {
 	let app: INestApplication;
 	let prismaConnection: PrismaService;
 	let jwt: JwtService;
@@ -24,7 +24,7 @@ describe('Create commercial room (E2E)', () => {
 		await app.init();
 	});
 
-	test('[POST] /create-commercial-room', async () => {
+	test('[POST] /create-hangar', async () => {
 
 		const contact = await prismaConnection.contact.create({
 			data: {
@@ -44,35 +44,35 @@ describe('Create commercial room (E2E)', () => {
 		const accessToken = jwt.sign({ sub: owner.id });
 
 		const response = await request(app.getHttpServer())
-			.post('/create-commercial-room')
+			.post('/create-hangar')
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				zipCode: '89120-000',
-				addressComplement: 'Room A43',
-				addressNumber: '9123',
-				areaSize: '200',
-				builtYear: '2021',
-				description: 'Great commercial room for you business',
+				addressComplement: 'Industrial area',
+				addressNumber: '429',
+				areaSize: 3500,
+				builtYear: 2016,
+				description: 'Big hangar, perfect for your storage company',
 				imagesIds: [],
 				internetAccess: true,
 				office: true,
-				furniture: true,
-				price: '2800',
-				restRoom: '4',
+				parkingLot: true,
+				price: 1600.000,
+				restRoom: 4,
 				securitySystem: true,
 				sponsorId: owner.id,
-				floors: '1',
-				status: 'FOR_RENT'
+				floors: 1,
+				status: 'FOR_BUY',
 			});
         
 		expect(response.statusCode).toBe(201);
 
-		const commercialRoomOnDatabase = prismaConnection.property.findFirst({
+		const hangarOnDatabase = prismaConnection.property.findFirst({
 			where: {
-				commercialType: 'COMMERCIAL_ROOM'
+				commercialType: 'HANGAR'
 			}
 		});
 
-		expect(commercialRoomOnDatabase).toBeTruthy();
+		expect(hangarOnDatabase).toBeTruthy();
 	});
 });

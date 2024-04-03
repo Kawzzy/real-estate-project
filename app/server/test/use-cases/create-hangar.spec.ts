@@ -5,13 +5,15 @@ import { CreateHangarUseCase } from '@/use-cases/create-hangar';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { InMemoryHangarRepository } from 'test/repositories/in-memory-hangar-repository';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 
 describe('Create Hangar', () => {
     
 	it('should create a Hangar', async () => {
         
 		const inMemoryHangarRepository: InMemoryHangarRepository = new InMemoryHangarRepository();
-		const sut: CreateHangarUseCase = new CreateHangarUseCase(inMemoryHangarRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateHangarUseCase = new CreateHangarUseCase(inMemoryHangarRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -28,7 +30,9 @@ describe('Create Hangar', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			zipCodeInfo: zipCodeInfo,
+			addressComplement: address.complement,
+			addressNumber: address.number,
 			areaSize: 200,
 			builtYear: 2021,
 			description: 'Big hangar, perfect for your storage company',

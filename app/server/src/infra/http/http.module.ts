@@ -1,6 +1,7 @@
 import { Loft } from '@/entities/loft';
 import { Module } from '@nestjs/common';
 import { House } from '@/entities/house';
+import { Hangar } from '@/entities/hangar';
 import { Studio } from '@/entities/studio';
 import { Apartment } from '@/entities/apartment';
 import { Encrypter } from '@/cryptography/encrypter';
@@ -12,6 +13,7 @@ import { CreateAgentUseCase } from '@/use-cases/create-agent';
 import { CreateHouseUseCase } from '@/use-cases/create-house';
 import { CreateOwnerUseCase } from '@/use-cases/create-owner';
 import { HashGenerator } from '@/cryptography/hash-generator';
+import { CreateHangarUseCase } from '@/use-cases/create-hangar';
 import { CreateStudioUseCase } from '@/use-cases/create-studio';
 import { AgentRepository } from '@/repositories/agent-repository';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
@@ -31,6 +33,7 @@ import { CreateLoftController } from './controllers/create-loft.controller';
 import { AuthenticateCompanyUseCase } from '@/use-cases/authenticate-company';
 import { CreateHouseController } from './controllers/create-house.controller';
 import { ZipCodeInfoRepository } from '@/repositories/zipcode-info-repository';
+import { CreateHangarController } from './controllers/create-hangar.controller';
 import { CreateStudioController } from './controllers/create-studio.controller';
 import { CreateCommercialRoomUseCase } from '@/use-cases/create-commercial-room';
 import { CreateAgentController } from './controllers/create-agent-account.controller';
@@ -46,6 +49,7 @@ import { PrismaAgentRepository } from '../database/prisma/repositories/prisma-ag
 import { PrismaHouseRepository } from '../database/prisma/repositories/prisma-house-repository';
 import { PrismaOwnerRepository } from '../database/prisma/repositories/prisma-owner-repository';
 import { CreateCommercialRoomController } from './controllers/create-commercial-room.controller';
+import { PrismaHangarRepository } from '../database/prisma/repositories/prisma-hangar-repository';
 import { PrismaStudioRepository } from '../database/prisma/repositories/prisma-studio-repository';
 import { PrismaAddressRepository } from '../database/prisma/repositories/prisma-address-repository';
 import { PrismaCompanyRepository } from '../database/prisma/repositories/prisma-company-repository';
@@ -64,6 +68,7 @@ import { PrismaCommercialRoomRepository } from '../database/prisma/repositories/
 		CreateAgentController,
 		CreateHouseController,
 		CreateOwnerController,
+		CreateHangarController,
 		CreateStudioController,
 		CreateCompanyController,
 		CreateApartmentController,
@@ -146,6 +151,12 @@ import { PrismaCommercialRoomRepository } from '../database/prisma/repositories/
 				return new CreateCommercialRoomUseCase(propertyRepository, addressRepository);
 			},
 			inject: [PrismaCommercialRoomRepository, PrismaAddressRepository]
+		}, {
+			provide: CreateHangarUseCase,
+			useFactory: (propertyRepository: PropertyRepository<Hangar>, addressRepository: AddressRepository) => {
+				return new CreateHangarUseCase(propertyRepository, addressRepository);
+			},
+			inject: [PrismaHangarRepository, PrismaAddressRepository]
 		}
 	]
 })

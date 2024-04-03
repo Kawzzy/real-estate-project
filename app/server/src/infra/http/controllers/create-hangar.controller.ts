@@ -1,56 +1,56 @@
 import { z } from 'zod';
 import { AuthGuard } from '@nestjs/passport';
 import { IRequestBody } from '@/utils/request-utils';
+import { CreateHangarUseCase } from '@/use-cases/create-hangar';
 import { UserPayload } from '@/infra/auth/sources/jwt.strategy';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { CurrentUser } from '@/infra/auth/sources/current-user.decorator';
-import { CreateCommercialRoomUseCase } from '@/use-cases/create-commercial-room';
 import { Body, Controller, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateZipCodeInfoInterceptor } from '../interceptors/create-zip-code-info-interceptor';
 
-@Controller('/create-commercial-room')
+@Controller('/create-hangar')
 @UseGuards(AuthGuard('jwt'))
 @UseInterceptors(CreateZipCodeInfoInterceptor)
-export class CreateCommercialRoomController {
-	constructor(private createCommercialRoom: CreateCommercialRoomUseCase) {}
-    
-    @Post()
-	async handle(@Body() body: CreateCommercialRoomBodySchema, @Request() request: IRequestBody, @CurrentUser() user: UserPayload) {
-		const { addressComplement, addressNumber, areaSize, builtYear, description, floors, furniture, imagesIds,
-			internetAccess, office, price, restRoom, securitySystem, sponsorId, status
-		} = createCommercialRoomBodySchema.parse(body);
+export class CreateHangarController {
+	constructor(private createHangar: CreateHangarUseCase) {}
 
+    @Post()
+	async handle(@Body() body: CreateHangarBodySchema, @Request() request: IRequestBody, @CurrentUser() user: UserPayload) {
+		const { addressComplement, addressNumber, areaSize, builtYear, description, floors, imagesIds,
+			internetAccess, office, parkingLot, price, restRoom, securitySystem, sponsorId, status,
+		} = createHangarBodySchema.parse(body);
+        
 		const ownerId = user.sub;
 
 		const { zipCodeInfo } = request;
 
-		await this.createCommercialRoom.handle({
+		await this.createHangar.handle({
+			zipCodeInfo,
 			addressComplement,
 			addressNumber,
 			areaSize,
 			builtYear,
 			description,
-			furniture,
 			imagesIds,
 			internetAccess,
 			office,
 			ownerId,
+			parkingLot,
 			price,
 			restRoom,
 			securitySystem,
 			sponsorId,
 			status,
-			type: CommercialType.COMMERCIAL_ROOM,
-			zipCodeInfo,
-			floors
+			type: CommercialType.HANGAR,
+			floors,
 		});
 	}
 }
 
-const createCommercialRoomBodySchema = z.object({
-	addressNumber: z.string(),
+const createHangarBodySchema = z.object({
 	addressComplement: z.string(),
+	addressNumber: z.string(),
 	description: z.string(),
 	status: z.enum([PropertyStatus.FOR_BUY, PropertyStatus.FOR_RENT]),
 	price: z.coerce.number(),
@@ -63,7 +63,7 @@ const createCommercialRoomBodySchema = z.object({
 	securitySystem: z.boolean(),
 	internetAccess: z.boolean(),
 	restRoom: z.coerce.number(),
-	furniture: z.boolean()
+	parkingLot: z.boolean()
 });
 
-type CreateCommercialRoomBodySchema = z.infer<typeof createCommercialRoomBodySchema>
+type CreateHangarBodySchema = z.infer<typeof createHangarBodySchema>
