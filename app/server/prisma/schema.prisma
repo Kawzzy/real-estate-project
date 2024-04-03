@@ -80,12 +80,12 @@ model Property {
   id             String    @id @default(uuid())
   cod            Int       @unique @default(autoincrement())
   description    String
-  condominium    String
-  condominiumTax Decimal
+  condominium    String?
+  condominiumTax Decimal?
   price          Decimal
   areaSize       Int
   builtYear      Int
-  amenities      Int
+  amenities      Int?
   floors         Int       @default(1)
   bedrooms       Int       @default(1)
   bathrooms      Int       @default(1)

@@ -10,6 +10,7 @@ import { PrismaCompanyRepository } from './prisma/repositories/prisma-company-re
 import { PrismaAddressRepository } from './prisma/repositories/prisma-address-repository';
 import { PrismaApartmentRepository } from './prisma/repositories/prisma-apartment-repository';
 import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-code-info-repository';
+import { PrismaCommercialRoomRepository } from './prisma/repositories/prisma-commercial-room-repository';
 
 @Module({
 	providers: [
@@ -23,7 +24,8 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaContactRepository,
 		PrismaCompanyRepository,
 		PrismaApartmentRepository,
-		PrismaZipCodeInfoRepository
+		PrismaZipCodeInfoRepository,
+		PrismaCommercialRoomRepository
 	],
 	exports: [
 		PrismaService,
@@ -36,7 +38,8 @@ import { PrismaZipCodeInfoRepository } from './prisma/repositories/prisma-zip-co
 		PrismaContactRepository,
 		PrismaCompanyRepository,
 		PrismaApartmentRepository,
-		PrismaZipCodeInfoRepository
+		PrismaZipCodeInfoRepository,
+		PrismaCommercialRoomRepository
 	]
 })
 export class DatabaseModule {}

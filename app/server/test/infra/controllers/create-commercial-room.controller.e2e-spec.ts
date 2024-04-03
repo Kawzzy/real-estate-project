@@ -6,7 +6,7 @@ import { AppModule } from '@/infra/app.module';
 import { INestApplication } from '@nestjs/common';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 
-describe('Create house (E2E)', () => {
+describe('Create commercial room (E2E)', () => {
 	let app: INestApplication;
 	let prismaConnection: PrismaService;
 	let jwt: JwtService;
@@ -24,7 +24,7 @@ describe('Create house (E2E)', () => {
 		await app.init();
 	});
 
-	test('[POST] /create-house', async () => {
+	test('[POST] /create-commercial-room', async () => {
 
 		const contact = await prismaConnection.contact.create({
 			data: {
@@ -44,54 +44,35 @@ describe('Create house (E2E)', () => {
 		const accessToken = jwt.sign({ sub: owner.id });
 
 		const response = await request(app.getHttpServer())
-			.post('/create-house')
+			.post('/create-commercial-room')
 			.set('Authorization', `Bearer ${accessToken}`)
 			.send({
 				zipCode: '89120-000',
-				addressComplement: 'Brodwood way',
-				addressNumber: '938',
-				amenities: 3,
-				areaSize: 45,
-				builtYear: 2022,
-				description: 'Nice house close to the lake',
+				addressComplement: 'Room A43',
+				addressNumber: '9123',
+				areaSize: '200',
+				builtYear: '2021',
+				description: 'Great commercial room for you business',
 				imagesIds: [],
-				price: 2000,
-				sponsorId: owner.id,
-				status: 'FOR_BUY',
-				airConditioner: 1,
-				balcony: 0,
-				bathrooms: 1,
-				bedrooms: 1,
-				condominium: 'Decent house for a small family',
-				condominiumTax: 800,
-				dinnerRoom: 0,
-				elevator: 2,
-				floors: 2,
+				internetAccess: true,
+				office: true,
 				furniture: true,
-				garage: 1,
-				gym: true,
-				heat: 1,
-				kitchen: 1,
-				laundry: 1,
-				livingRoom: 1,
-				playground: false,
-				pool: 1,
-				socialSpace: true,
-				deck: true,
-				porch: false,
-				backyard: true,
-				driveWay: true,
-				frontYard: true
+				price: '2800',
+				restRoom: '4',
+				securitySystem: true,
+				sponsorId: owner.id,
+				floors: '1',
+				status: 'FOR_RENT'
 			});
         
 		expect(response.statusCode).toBe(201);
 
-		const houseOnDatabase = prismaConnection.property.findFirst({
+		const commercialRoomOnDatabase = prismaConnection.property.findFirst({
 			where: {
-				residentialType: 'HOUSE'
+				residentialType: 'STUDIO'
 			}
 		});
 
-		expect(houseOnDatabase).toBeTruthy();
+		expect(commercialRoomOnDatabase).toBeTruthy();
 	});
 });

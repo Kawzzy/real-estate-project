@@ -4,6 +4,7 @@ import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { CreateCommercialRoomUseCase } from '@/use-cases/create-commercial-room';
+import { InMemoryAddressRepository } from 'test/repositories/in-memory-address-repository';
 import { InMemoryCommercialRoomRepository } from 'test/repositories/in-memory-commercial-room-repository';
 
 describe('Create CommercialRoom', () => {
@@ -11,7 +12,8 @@ describe('Create CommercialRoom', () => {
 	it('should create a CommercialRoom', async () => {
         
 		const inMemoryCommercialRoomRepository: InMemoryCommercialRoomRepository = new InMemoryCommercialRoomRepository();
-		const sut: CreateCommercialRoomUseCase = new CreateCommercialRoomUseCase(inMemoryCommercialRoomRepository);
+		const inMemoryAddressRepository: InMemoryAddressRepository = new InMemoryAddressRepository();
+		const sut: CreateCommercialRoomUseCase = new CreateCommercialRoomUseCase(inMemoryCommercialRoomRepository, inMemoryAddressRepository);
 
 		const zipCodeInfo = ZipCodeInfo.create({
 			zipCode: '89040-100',
@@ -28,7 +30,9 @@ describe('Create CommercialRoom', () => {
 		});
 		
 		const result = await sut.handle({
-			address,
+			zipCodeInfo,
+			addressComplement: address.complement,
+			addressNumber: address.number,
 			areaSize: 200,
 			builtYear: 2021,
 			description: 'Great commercial room for you business',

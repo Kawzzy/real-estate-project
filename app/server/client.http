@@ -241,3 +241,29 @@ Authorization: Bearer {{ownerAuthToken}}
 	"driveWay": true,
 	"frontYard": true
 }
+
+###
+
+# @name createCommercialRoom
+POST {{baseUrl}}/create-commercial-room
+Content-Type: application/json
+Authorization: Bearer {{ownerAuthToken}}
+
+{
+	"zipCode": "89120-000",
+	"addressComplement": "Room A43",
+	"addressNumber": "9123",
+	"areaSize": "200",
+	"builtYear": "2021",
+	"description": "Great commercial room for you business",
+	"imagesIds": [],
+	"internetAccess": true,
+	"office": true,
+	"furniture": true,
+	"price": "2800",
+	"restRoom": "4",
+	"securitySystem": true,
+	"sponsorId": "76964f51-f9a8-459a-ace5-41891da4a10e",
+	"floors": "1",
+	"status": "FOR_RENT"
+}
