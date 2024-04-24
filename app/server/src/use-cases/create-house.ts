@@ -28,7 +28,7 @@ export class CreateHouseUseCase {
 		await this.addressRepository.create(address);
 
 		const house = House.create({
-			address,
+			addressId: address.id,
 			amenities,
 			areaSize,
 			backyard,

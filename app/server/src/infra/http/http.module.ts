@@ -13,17 +13,20 @@ import { CreateAgentUseCase } from '@/use-cases/create-agent';
 import { CreateHouseUseCase } from '@/use-cases/create-house';
 import { CreateOwnerUseCase } from '@/use-cases/create-owner';
 import { HashGenerator } from '@/cryptography/hash-generator';
+import { GetPropertyUseCase } from '@/use-cases/get-property';
 import { CreateHangarUseCase } from '@/use-cases/create-hangar';
 import { CreateStudioUseCase } from '@/use-cases/create-studio';
 import { AgentRepository } from '@/repositories/agent-repository';
 import { CreateCompanyUseCase } from '@/use-cases/create-company';
 import { OwnerRepository } from '@/repositories/owner-repository';
+import { DeletePropertyUseCase } from '@/use-cases/delete-property';
 import { BcryptHasher } from '../cryptography/sources/bcrypt-hasher';
 import { JwtEncrypter } from '../cryptography/sources/jwt-encrypter';
 import { AddressRepository } from '@/repositories/address-repository';
 import { CompanyRepository } from '@/repositories/company-repository';
 import { ContactRepository } from '@/repositories/contact-repository';
 import { CreateApartmentUseCase } from '@/use-cases/create-apartment';
+import { FetchPropertiesUseCase } from '@/use-cases/fetch-properties';
 import { PropertyRepository } from '@/repositories/property-repository';
 import { CryptographyModule } from '../cryptography/cryptography.module';
 import { AuthenticateAgentUseCase } from '@/use-cases/authenticate-agent';
@@ -32,13 +35,16 @@ import { CreateZipCodeInfoUseCase } from '@/use-cases/create-zipcode-info';
 import { CreateLoftController } from './controllers/create-loft.controller';
 import { AuthenticateCompanyUseCase } from '@/use-cases/authenticate-company';
 import { CreateHouseController } from './controllers/create-house.controller';
+import { GetPropertyController } from './controllers/get-property.controller';
 import { ZipCodeInfoRepository } from '@/repositories/zipcode-info-repository';
 import { CreateHangarController } from './controllers/create-hangar.controller';
 import { CreateStudioController } from './controllers/create-studio.controller';
 import { CreateCommercialRoomUseCase } from '@/use-cases/create-commercial-room';
+import { DeletePropertyController } from './controllers/delete-property.controller';
 import { CreateAgentController } from './controllers/create-agent-account.controller';
 import { CreateApartmentController } from './controllers/create-apartment.controller';
 import { CreateOwnerController } from './controllers/create-owner-account.controller';
+import { FetchPropertiesController } from './controllers/fetch-properties.controller';
 import { AuthenticateAgentController } from './controllers/authenticate-agent.controller';
 import { AuthenticateOwnerController } from './controllers/authenticate-owner.controller';
 import { CreateCompanyController } from './controllers/create-company-account.controller';
@@ -68,10 +74,13 @@ import { PrismaCommercialRoomRepository } from '../database/prisma/repositories/
 		CreateAgentController,
 		CreateHouseController,
 		CreateOwnerController,
+		GetPropertyController,
 		CreateHangarController,
 		CreateStudioController,
 		CreateCompanyController,
+		DeletePropertyController,
 		CreateApartmentController,
+		FetchPropertiesController,
 		AuthenticateAgentController,
 		AuthenticateOwnerController,
 		AuthenticateCompanyController,
@@ -157,6 +166,31 @@ import { PrismaCommercialRoomRepository } from '../database/prisma/repositories/
 				return new CreateHangarUseCase(propertyRepository, addressRepository);
 			},
 			inject: [PrismaHangarRepository, PrismaAddressRepository]
+		}, {
+			provide: FetchPropertiesUseCase,
+			useFactory: (
+				apartmentRepository: PropertyRepository<Apartment>,
+				studioRepository: PropertyRepository<Studio>,
+				loftRepository: PropertyRepository<Loft>,
+				houseRepository: PropertyRepository<House>,
+				hangarRepository: PropertyRepository<Hangar>,
+				commercialRoomRepository: PropertyRepository<CommercialRoom>
+			) => {
+				return new FetchPropertiesUseCase(apartmentRepository, studioRepository, loftRepository, houseRepository, hangarRepository, commercialRoomRepository);
+			},
+			inject: [PrismaApartmentRepository, PrismaStudioRepository, PrismaLoftRepository, PrismaHouseRepository, PrismaHangarRepository, PrismaCommercialRoomRepository]
+		}, {
+			provide: GetPropertyUseCase,
+			useFactory: (apartmentRepository: PropertyRepository<Apartment>) => {
+				return new GetPropertyUseCase(apartmentRepository);
+			},
+			inject: [PrismaApartmentRepository]
+		}, {
+			provide: DeletePropertyUseCase,
+			useFactory: (apartmentRepository: PropertyRepository<Apartment>) => {
+				return new DeletePropertyUseCase(apartmentRepository);
+			},
+			inject: [PrismaApartmentRepository]
 		}
 	]
 })

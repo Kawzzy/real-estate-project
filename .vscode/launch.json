@@ -19,7 +19,7 @@
                 "tsconfig-paths/register"
             ],
             "args": [
-                "--P",
+                "-P",
                 "${workspaceFolder}\\app\\server\\tsconfig.json"
             ],
             "console": "integratedTerminal",

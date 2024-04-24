@@ -1,10 +1,10 @@
 import { Studio } from '@/entities/studio';
 import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
+import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { PropertyStatus } from '@/entities/enums/property-status';
 import { ResidentialType } from '@/entities/enums/residential-type';
 import { PropertyRepository } from '@/repositories/property-repository';
-import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { AddressRepository } from '@/repositories/address-repository';
 
 type ICreateStudioUseCaseResponse = Either< null, { studio: Studio }>
@@ -27,7 +27,7 @@ export class CreateStudioUseCase {
 		await this.addressRepository.create(address);
 
 		const studio = Studio.create({
-			address,
+			addressId: address.id,
 			amenities,
 			areaSize,
 			builtYear,

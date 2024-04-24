@@ -1,11 +1,11 @@
 import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
+import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { CommercialRoom } from '@/entities/commercial-room';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
-import { PropertyRepository } from '@/repositories/property-repository';
-import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { AddressRepository } from '@/repositories/address-repository';
+import { PropertyRepository } from '@/repositories/property-repository';
 
 type ICreateCommercialRoomUseCaseResponse = Either<null, { commercialRoom: CommercialRoom }>
 
@@ -26,7 +26,7 @@ export class CreateCommercialRoomUseCase {
 		await this.addressRepository.create(address);
 		
 		const commercialRoom = CommercialRoom.create({
-			address,
+			addressId: address.id,
 			areaSize,
 			builtYear,
 			description,

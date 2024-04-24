@@ -1,12 +1,11 @@
 import { Entity } from './entity';
-import { Address } from './address';
 import { PropertyStatus } from './enums/property-status';
 
 export interface IPropertyProps {
     cod?: number
 	description: string
 	status: PropertyStatus
-	address: Address
+	addressId: string
 	price: number
 	areaSize: number
 	floors?: number
@@ -39,8 +38,8 @@ export abstract class Property<Props extends IPropertyProps> extends Entity<IPro
 		return this.props.status;
 	}
 
-	get address(): Address {
-		return this.props.address;
+	get addressId(): string {
+		return this.props.addressId;
 	}
 
 	get price(): number {
@@ -75,7 +74,7 @@ export abstract class Property<Props extends IPropertyProps> extends Entity<IPro
 		return this.props.sponsorId;
 	}
 
-	get createdAT(): Date {
+	get createdAt(): Date {
 		return this.props.createdAt;
 	}
 

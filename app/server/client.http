@@ -293,3 +293,15 @@ Authorization: Bearer {{ownerAuthToken}}
 	"floors": "1",
 	"status": "FOR_BUY"
 }
+
+###
+
+# @name getAllProperties
+GET {{baseUrl}}/property/all
+Content-Type: application/json
+
+###
+
+# @name getProperty
+GET {{baseUrl}}/property/bb897739-90b5-497b-9046-351d5008a047
+Content-Type: application/json

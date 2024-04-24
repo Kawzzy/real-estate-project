@@ -29,7 +29,7 @@ export class CreateApartmentUseCase {
 		await this.addressRepository.create(address);
         
 		const apartment = Apartment.create({
-			address,
+			addressId: address.id,
 			amenities,
 			areaSize,
 			builtYear,

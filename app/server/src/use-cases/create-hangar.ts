@@ -1,11 +1,11 @@
 import { Hangar } from '@/entities/hangar';
 import { Address } from '@/entities/address';
 import { Either, right } from '@/utils/either';
+import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { CommercialType } from '@/entities/enums/commercial-type';
 import { PropertyStatus } from '@/entities/enums/property-status';
-import { PropertyRepository } from '@/repositories/property-repository';
-import { ZipCodeInfo } from '@/entities/zipCodeInfo';
 import { AddressRepository } from '@/repositories/address-repository';
+import { PropertyRepository } from '@/repositories/property-repository';
 
 type ICreateHangarUseCaseResponse = Either<null, { hangar: Hangar }>
 
@@ -26,7 +26,7 @@ export class CreateHangarUseCase {
 		await this.addressRepository.create(address);
 		
 		const hangar = Hangar.create({
-			address,
+			addressId: address.id,
 			areaSize,
 			builtYear,
 			description,

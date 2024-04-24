@@ -28,7 +28,7 @@ export class CreateLoftUseCase {
 		await this.addressRepository.create(address);
 		
 		const loft = Loft.create({
-			address,
+			addressId: address.id,
 			airConditioner,
 			amenities,
 			areaSize,
